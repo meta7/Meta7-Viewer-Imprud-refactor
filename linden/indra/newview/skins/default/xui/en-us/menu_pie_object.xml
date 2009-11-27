@@ -45,10 +45,8 @@
       <on_enable function="Object.EnableWear" />
     </menu_item_call>
     <pie_menu label="More &gt;" name="Rate Menu">
-      <menu_item_call label="Export" enabled="false" hidden="false"
-                      mouse_opaqu="true" name="Export">
+      <menu_item_call name="Export" label="Export" mouse_opaque="true">
         <on_click function="Object.Export" />
-        <on_enable function="Object.EnableExport" />
       </menu_item_call>
       <menu_item_call enabled="false" label="Mute" mouse_opaque="true" name="Object Mute">
         <on_click function="Object.Mute" />
