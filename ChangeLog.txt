@@ -1,5 +1,32 @@
 2009-11-28  Jacek Antonelli  <jacek.antonelli@gmail.com>
 
+	* Merged in new object backup as HPA implementation.
+	  HPA feature by Patrick Sapinski, based on Emerald's backup.
+
+	  modified:   linden/indra/llxml/llxmlnode.cpp
+	  modified:   linden/indra/newview/CMakeLists.txt
+	  modified:   linden/indra/newview/app_settings/settings.xml
+	  new file:   linden/indra/newview/chatbar_as_cmdline.cpp
+	  new file:   linden/indra/newview/chatbar_as_cmdline.h
+	  new file:   linden/indra/newview/exporttracker.cpp
+	  new file:   linden/indra/newview/exporttracker.h
+	  new file:   linden/indra/newview/importtracker.cpp
+	  new file:   linden/indra/newview/importtracker.h
+	  modified:   linden/indra/newview/llfilepicker.cpp
+	  modified:   linden/indra/newview/llfilepicker.h
+	  modified:   linden/indra/newview/llstartup.cpp
+	  modified:   linden/indra/newview/llviewermenu.cpp
+	  modified:   linden/indra/newview/llviewermenufile.cpp
+	  modified:   linden/indra/newview/llviewerobjectlist.cpp
+	  modified:   linden/indra/newview/llwearable.h
+	  deleted:    linden/indra/newview/primbackup.cpp
+	  deleted:    linden/indra/newview/primbackup.h
+	  new file:   linden/indra/newview/skins/default/xui/en-us/floater_prim_export.xml
+	  modified:   linden/indra/newview/skins/default/xui/en-us/floater_prim_import.xml
+	  modified:   linden/indra/newview/skins/default/xui/en-us/menu_pie_object.xml
+	  modified:   linden/indra/newview/skins/default/xui/en-us/menu_viewer.xml
+
+
 	* Downgraded Linux boost to 1.36.0.
 
 	  modified:   linden/install.xml
