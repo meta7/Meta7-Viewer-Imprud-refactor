@@ -77,7 +77,7 @@ std::string JCExportTracker::asset_dir;
 std::set<LLUUID> JCExportTracker::requested_textures;
 LLVector3 JCExportTracker::selection_center;
 LLVector3 JCExportTracker::selection_size;
-void cmdline_printchat(std::string chat);
+//void cmdline_printchat(std::string chat);
 std::list<PropertiesRequest_t*> JCExportTracker::requested_properties;
 
 ExportTrackerFloater* ExportTrackerFloater::sInstance = 0;
@@ -593,7 +593,7 @@ void JCExportTracker::onFileLoadedForSave(BOOL success,
 
 				if(!src_vi->readBackRaw(0,src,false))
 				{
-					cmdline_printchat("Failed to readback texture");
+					//cmdline_printchat("Failed to readback texture");
 					src->deleteData(); //check me, is this valid?
 					delete info;
 					return;
@@ -805,7 +805,7 @@ void JCExportTracker::finalize(LLSD data)
 	center_xml->createChild("y", TRUE)->setValue(llformat("%.5f", selection_center.mV[VY]));
 	center_xml->createChild("z", TRUE)->setValue(llformat("%.5f", selection_center.mV[VZ]));
 
-	cmdline_printchat("Attempting to output " + llformat("%u", data.size()) + " Objects.");
+	//cmdline_printchat("Attempting to output " + llformat("%u", data.size()) + " Objects.");
 
 	// for each linkset
 	for(LLSD::array_iterator array_itr = data.beginArray();
@@ -1319,7 +1319,7 @@ void JCExportTracker::finalize(LLSD data)
 
 		temp_xml->writeToOstream(out);
 		out.close();
-		cmdline_printchat("File Saved.");
+		//cmdline_printchat("File Saved.");
 
 /* this code gzips the archive, we want to zip it though!
 		std::string gzip_filename(destination);
@@ -1601,7 +1601,6 @@ void JCExportTracker::inventoryChanged(LLViewerObject* obj,
 									{
 										LLInventoryItem* item = (LLInventoryItem*)((LLInventoryObject*)(*it));
 										LLViewerInventoryItem* new_item = (LLViewerInventoryItem*)item;
-										new_item; //ugh
 										LLPermissions perm;
 										llassert(perm = new_item->getPermissions());
 										if(couldDL(asset->getType())
@@ -1671,9 +1670,16 @@ void JCAssetExportCallback(LLVFS *vfs, const LLUUID& uuid, LLAssetType::EType ty
 				strcpy((char*)buffer,card.c_str());
 			}//else //cmdline_printchat("Failed to decode notecard");
 		}
-		apr_file_t* fp = ll_apr_file_open(info->path.c_str(), LL_APR_WB);
-		if(fp)ll_apr_file_write(fp, buffer, size);
-		apr_file_close(fp);
+
+		LLAPRFile aFile;
+		aFile.open(info->path.c_str(), LL_APR_WB);
+		apr_file_t* fp = aFile.getFileHandle();
+
+		if(fp)
+		{
+			aFile.write(buffer, size);
+		}
+		aFile.close();
 		//delete[] buffer;
 		ExportTrackerFloater::assets_exported++;
 	}else //cmdline_printchat("Failed to save file "+info->path+" ("+info->name+") : "+std::string(LLAssetStorage::getErrorString(result)));

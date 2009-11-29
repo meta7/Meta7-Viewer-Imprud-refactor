@@ -1170,7 +1170,7 @@ void ImportTracker::clear()
 	state = IDLE;
 	finish();
 }
-void cmdline_printchat(std::string message);
+// void cmdline_printchat(std::string message);
 LLViewerObject* find(U32 local)
 {
 	S32 i;
@@ -1429,7 +1429,7 @@ void insert(LLViewerInventoryItem* item, LLViewerObject* objectp, InventoryImpor
 							TRUE,
 							LLToolDragAndDrop::SOURCE_AGENT,
 							gAgent.getID());
-		cmdline_printchat("inserted.");
+		//cmdline_printchat("inserted.");
 	}
 	delete data;
 	gImportTracker.asset_insertions -= 1;
@@ -1449,7 +1449,7 @@ public:
 	}
 	void fire(const LLUUID &inv_item)
 	{
-		cmdline_printchat("fired transfer for "+inv_item.asString()+"|"+data->assetid.asString());
+		//cmdline_printchat("fired transfer for "+inv_item.asString()+"|"+data->assetid.asString());
 		LLViewerInventoryItem* item = (LLViewerInventoryItem*)gInventory.getItem(inv_item);
 		LLViewerObject* objectp = find(data->localid);
 		insert(item, objectp, data);
@@ -1509,7 +1509,7 @@ public:
 	virtual void uploadComplete(const LLSD& content)
 	{
 		//ImportTrackerFloater::assets_uploaded++;
-		cmdline_printchat("completed upload, inserting");
+		//cmdline_printchat("completed upload, inserting");
 		LLViewerInventoryItem* item = (LLViewerInventoryItem*)gInventory.getItem(item_id);
 		LLViewerObject* objectp = find(data->localid);
 		insert(item, objectp, data);
@@ -1529,23 +1529,25 @@ public:
 	void fire(const LLUUID &inv_item)
 	{
 		S32 file_size;
-		apr_file_t* fp = ll_apr_file_open(data->filename, LL_APR_RB, &file_size);
+		LLAPRFile aFile;
+		aFile.open(data->filename, LL_APR_RB, NULL, &file_size);
+		apr_file_t* fp = aFile.getFileHandle();
 
 		if (fp)
 		{
-			cmdline_printchat("got file handle @ postinv");
+			//cmdline_printchat("got file handle @ postinv");
 			LLVFile file(gVFS, data->assetid, data->type, LLVFile::WRITE);
 			file.setMaxSize(file_size);
 			const S32 buf_size = 65536;
 			U8 copy_buf[buf_size];
-			while ((file_size = ll_apr_file_read(fp, copy_buf, buf_size)))
+			while ((file_size = aFile.read(copy_buf, buf_size)))
 			{
 				file.write(copy_buf, file_size);
 			}
 			switch(data->type)
 			{
 			case LLAssetType::AT_NOTECARD:
-				cmdline_printchat("case notecard @ postinv");
+				//cmdline_printchat("case notecard @ postinv");
 				{
 					/*LLViewerTextEditor* edit = new LLViewerTextEditor("",LLRect(0,0,0,0),S32_MAX,"");
 					S32 size = gVFS->getSize(data->assetid, data->type);
@@ -1571,13 +1573,13 @@ public:
 					std::string agent_url = gAgent.getRegion()->getCapability("UpdateNotecardAgentInventory");
 					LLSD body;
 					body["item_id"] = inv_item;
-					cmdline_printchat("posting content as " + data->assetid.asString());
+					//cmdline_printchat("posting content as " + data->assetid.asString());
 					LLHTTPClient::post(agent_url, body,
 								new JCPostInvUploadResponder(body, data->assetid, data->type,inv_item,data));
 				}
 				break;
 			case LLAssetType::AT_LSL_TEXT:
-				cmdline_printchat("case lsltext @ postinv");
+				//cmdline_printchat("case lsltext @ postinv");
 				{
 					std::string url = gAgent.getRegion()->getCapability("UpdateScriptAgent");
 					LLSD body;
@@ -1596,7 +1598,7 @@ public:
 					}
 					delete buffer;
 					body["target"] = (domono == TRUE) ? "mono" : "lsl2";
-					cmdline_printchat("posting content as " + data->assetid.asString());
+					//cmdline_printchat("posting content as " + data->assetid.asString());
 					LLHTTPClient::post(url, body, new JCPostInvUploadResponder(body, data->assetid, data->type,inv_item,data));
 				}
 				break;
@@ -1613,7 +1615,7 @@ void JCImportInventorycallback(const LLUUID& uuid, void* user_data, S32 result, 
 {
 	if(result == LL_ERR_NOERR)
 	{
-		cmdline_printchat("fired importinvcall for "+uuid.asString());
+		//cmdline_printchat("fired importinvcall for "+uuid.asString());
 		InventoryImportInfo* data = (InventoryImportInfo*)user_data;
 
 		LLPointer<LLInventoryCallback> cb = new JCImportTransferCallback(data);
@@ -1625,7 +1627,11 @@ void JCImportInventorycallback(const LLUUID& uuid, void* user_data, S32 result, 
 			data->description, data->type, LLInventoryType::defaultForAssetType(data->type), data->wear_type,
 			PERM_ALL,
 			cb);
-	}else cmdline_printchat("err: "+std::string(LLAssetStorage::getErrorString(result)));
+	}
+	//else
+	//{
+	//	cmdline_printchat("err: "+std::string(LLAssetStorage::getErrorString(result)));
+	//}
 }
 
 
@@ -1651,7 +1657,7 @@ void ImportTracker::send_inventory(LLSD& prim)
 			data->description = item["desc"].asString();
 			if(item.has("item_id"))
 			{
-				cmdline_printchat("item id found");
+				//cmdline_printchat("item id found");
 				std::string filename = assetpre + item["item_id"].asString() + "." + item["type"].asString();
 				//S32 file_size;
 				//LLAPRFile infile ;
@@ -1660,18 +1666,18 @@ void ImportTracker::send_inventory(LLSD& prim)
 				//if(fp)
 				if(LLFile::isfile(filename))
 				{
-					cmdline_printchat("file "+filename+" exists");
+					//cmdline_printchat("file "+filename+" exists");
 					data->filename = filename;
 					//infile.close();
 				}else
 				{
-					cmdline_printchat("file "+filename+" does not exist");
+					//cmdline_printchat("file "+filename+" does not exist");
 					delete data;
 					continue;
 				}
 			}else
 			{
-				cmdline_printchat("item id not found");
+				//cmdline_printchat("item id not found");
 				delete data;
 				continue;
 			}
@@ -1688,20 +1694,22 @@ void ImportTracker::send_inventory(LLSD& prim)
 				{
 				case LLAssetType::AT_TEXTURE:
 				case LLAssetType::AT_TEXTURE_TGA:
-					cmdline_printchat("case textures");
+					//cmdline_printchat("case textures");
 					{
 						std::string url = gAgent.getRegion()->getCapability("NewFileAgentInventory");
 						S32 file_size;
-						apr_file_t* fp = ll_apr_file_open(data->filename, LL_APR_RB, &file_size);
+						LLAPRFile aFile;
+						aFile.open(data->filename, LL_APR_RB, NULL, &file_size);
+						apr_file_t* fp = aFile.getFileHandle();
 
 						if (fp)
 						{
-							cmdline_printchat("got file handle");
+							//cmdline_printchat("got file handle");
 							LLVFile file(gVFS, data->assetid, data->type, LLVFile::WRITE);
 							file.setMaxSize(file_size);
 							const S32 buf_size = 65536;
 							U8 copy_buf[buf_size];
-							while ((file_size = ll_apr_file_read(fp, copy_buf, buf_size)))
+							while ((file_size = aFile.read(copy_buf, buf_size)))
 							{
 								file.write(copy_buf, file_size);
 							}
@@ -1715,7 +1723,7 @@ void ImportTracker::send_inventory(LLSD& prim)
 							body["group_mask"] = LLSD::Integer(U32_MAX);
 							body["everyone_mask"] = LLSD::Integer(U32_MAX);
 							body["expected_upload_cost"] = LLSD::Integer(LLGlobalEconomy::Singleton::getInstance()->getPriceUpload());
-							cmdline_printchat("posting "+ data->assetid.asString());
+							//cmdline_printchat("posting "+ data->assetid.asString());
 							LLHTTPClient::post(url, body, new JCImportInventoryResponder(body, data->assetid, data->type,data));
 							//error = TRUE;
 						}
@@ -1723,19 +1731,21 @@ void ImportTracker::send_inventory(LLSD& prim)
 					break;
 				case LLAssetType::AT_CLOTHING:
 				case LLAssetType::AT_BODYPART:
-					cmdline_printchat("case cloth/bodypart");
+					//cmdline_printchat("case cloth/bodypart");
 					{
-							S32 file_size;
-							apr_file_t* fp = ll_apr_file_open(data->filename, LL_APR_RB, &file_size);
+						S32 file_size;
+						LLAPRFile aFile;
+						aFile.open(data->filename, LL_APR_RB, NULL, &file_size);
+						apr_file_t* fp = aFile.getFileHandle();
 
-							if (fp)
-							{
-							cmdline_printchat("got file handle @ cloth");
+						if (fp)
+						{
+							//cmdline_printchat("got file handle @ cloth");
 							LLVFile file(gVFS, data->assetid, data->type, LLVFile::WRITE);
 							file.setMaxSize(file_size);
 							const S32 buf_size = 65536;
 							U8 copy_buf[buf_size];
-							while ((file_size = ll_apr_file_read(fp, copy_buf, buf_size)))
+							while ((file_size = aFile.read(copy_buf, buf_size)))
 							{
 								file.write(copy_buf, file_size);
 							}
@@ -1751,18 +1761,18 @@ void ImportTracker::send_inventory(LLSD& prim)
 								}
 								delete wearable;
 							}
-							cmdline_printchat("storing "+data->assetid.asString());
+							//cmdline_printchat("storing "+data->assetid.asString());
 							gAssetStorage->storeAssetData(data->tid, data->type,
-												JCImportInventorycallback,
-												(void*)data,
-												FALSE,
-												TRUE,
-												FALSE);
+							                              JCImportInventorycallback,
+							                              (void*)data,
+							                              FALSE,
+							                              TRUE,
+							                              FALSE);
 						}
 					}
 					break;
 				case LLAssetType::AT_NOTECARD:
-					cmdline_printchat("case notecard");
+					//cmdline_printchat("case notecard");
 					{
 						//std::string agent_url = gAgent.getRegion()->getCapability("UpdateNotecardAgentInventory");
 						LLPointer<LLInventoryCallback> cb = new JCPostInvCallback(data);
@@ -1776,7 +1786,7 @@ void ImportTracker::send_inventory(LLSD& prim)
 					}
 					break;
 				case LLAssetType::AT_LSL_TEXT:
-					cmdline_printchat("case LSL text");
+					//cmdline_printchat("case LSL text");
 					{
 						LLPointer<LLInventoryCallback> cb = new JCPostInvCallback(data);
 						LLPermissions perm;
@@ -1958,8 +1968,9 @@ void ImportTracker::send_image(LLSD& prim)
 			tex.setID(replacment);
 		}
 		else
-			cmdline_printchat("Failed to remap texture UUID " + tex.getID().asString());
-
+		{
+			//cmdline_printchat("Failed to remap texture UUID " + tex.getID().asString());
+		}
 
 		obj.setTE(U8(i), tex);
 	}
@@ -2041,7 +2052,9 @@ void ImportTracker::send_extras(LLSD& prim)
 			sculpt.setSculptTexture(replacment);
 		}
 		else
-			cmdline_printchat("Failed to remap sculpted texture UUID " + sculpt.getSculptTexture().asString());
+		{
+			//cmdline_printchat("Failed to remap sculpted texture UUID " + sculpt.getSculptTexture().asString());
+		}
 
 		
 		U8 tmp[MAX_OBJECT_PARAMS_SIZE];
@@ -2334,25 +2347,33 @@ void ImportTracker::upload_next_asset()
 
 	std::string filename=asset_dir+"//textures//"+struid + ".j2c";
 	S32 file_size;
-	apr_file_t* fp = ll_apr_file_open(filename, LL_APR_RB, &file_size);
+	LLAPRFile aFile;
+	apr_file_t* fp;
+	aFile.open(filename, LL_APR_RB, NULL, &file_size);
+	fp = aFile.getFileHandle();
 
 	//look for j2c first, then tga in the /textures/ folder.
 	if (!fp)
 	{
 		filename=asset_dir+"//textures//"+struid + ".tga";
-		fp = ll_apr_file_open(filename, LL_APR_RB, &file_size);
+		aFile.open(filename, LL_APR_RB, NULL, &file_size);
+		fp = aFile.getFileHandle();
 
 		//next look for j2c first, then tga in the /sculptmaps/ folder.
 		if (!fp)
 		{
 			filename=asset_dir+"//sculptmaps//"+struid + ".j2c";
-			fp = ll_apr_file_open(filename, LL_APR_RB, &file_size);
+			aFile.open(filename, LL_APR_RB, NULL, &file_size);
+			fp = aFile.getFileHandle();
 			if (!fp)
 			{
 				filename=asset_dir+"//sculptmaps//"+struid + ".tga";
-				fp = ll_apr_file_open(filename, LL_APR_RB, &file_size);
+				aFile.open(filename, LL_APR_RB, NULL, &file_size);
+				fp = aFile.getFileHandle();
 				if (!fp)
-					cmdline_printchat("Could not locate texture with UUID " + struid);
+				{
+					//cmdline_printchat("Could not locate texture with UUID " + struid);
+				}
 			}
 
 		}
@@ -2365,7 +2386,7 @@ void ImportTracker::upload_next_asset()
 		LLVFile file(gVFS, uuid,  LLAssetType::AT_TEXTURE, LLVFile::WRITE);
 		file.setMaxSize(file_size);
 		
-		while ((file_size = ll_apr_file_read(fp, copy_buf, buf_size)))
+		while ((file_size = aFile.read(copy_buf, buf_size)))
 		{
 			file.write(copy_buf, file_size);
 		}

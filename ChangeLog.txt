@@ -1,5 +1,11 @@
 2009-11-28  Jacek Antonelli  <jacek.antonelli@gmail.com>
 
+	* Cleaned up object backup code to compile successfully.
+
+	  modified:   linden/indra/newview/exporttracker.cpp
+	  modified:   linden/indra/newview/importtracker.cpp
+
+
 	* Merged in new object backup as HPA implementation.
 	  HPA feature by Patrick Sapinski, based on Emerald's backup.
 
