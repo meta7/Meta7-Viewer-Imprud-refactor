@@ -297,7 +297,12 @@ void LLDrawPoolAlpha::renderGroupAlpha(LLSpatialGroup* group, U32 type, U32 mask
 				light_enabled = FALSE;
 				if (LLPipeline::sRenderGlow)
 				{
-					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+					//********UMICH 3D LAB********
+					// protect the color mask change for correct anaglyph render
+					GLboolean mask[4];
+					glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+					glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+					//********UMICH 3D LAB********
 				}
 			}
 		}
@@ -307,7 +312,12 @@ void LLDrawPoolAlpha::renderGroupAlpha(LLSpatialGroup* group, U32 type, U32 mask
 			light_enabled = TRUE;
 			if (LLPipeline::sRenderGlow)
 			{
-				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+					//********UMICH 3D LAB********
+					// protect the color mask change for correct anaglyph render
+					GLboolean mask[4];
+					glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+					glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+					//********UMICH 3D LAB********
 			}
 		}
 
@@ -344,7 +354,12 @@ void LLDrawPoolAlpha::renderGroupAlpha(LLSpatialGroup* group, U32 type, U32 mask
 	
 		if (LLPipeline::sRenderGlow)
 		{
-			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+				//********UMICH 3D LAB********
+				// protect the color mask change for correct anaglyph render
+				GLboolean mask[4];
+				glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+				glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+				//********UMICH 3D LAB********
 		}
 	}
 

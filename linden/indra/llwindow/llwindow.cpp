@@ -245,7 +245,8 @@ LLWindow::LLWindow(BOOL fullscreen, U32 flags)
 	  mSwapMethod(SWAP_METHOD_UNDEFINED),
 	  mHideCursorPermanent(FALSE),
 	  mFlags(flags),
-	  mHighSurrogate(0)
+	  mHighSurrogate(0),
+	  mStereoMode(STEREO_MODE_NONE)
 {
 	for (U32 i = 0; i < 6; i++)
 	{
@@ -427,11 +428,12 @@ LLWindow* LLWindowManager::createWindow(
 	BOOL clearBg,
 	BOOL disable_vsync,
 	BOOL use_gl,
-	BOOL ignore_pixel_depth)
+	BOOL ignore_pixel_depth,
+	S32 stereo_mode)
 {
 	return createWindow(
 		title, name, upper_left.mX, upper_left.mY, size.mX, size.mY, flags, 
-		fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+		fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 }
 
 LLWindow* LLWindowManager::createWindow(
@@ -440,7 +442,8 @@ LLWindow* LLWindowManager::createWindow(
 	BOOL clearBg,
 	BOOL disable_vsync,
 	BOOL use_gl,
-	BOOL ignore_pixel_depth)
+	BOOL ignore_pixel_depth,
+	S32 stereo_mode)
 {
 	LLWindow* new_window;
 
@@ -449,30 +452,30 @@ LLWindow* LLWindowManager::createWindow(
 #if LL_MESA_HEADLESS
 		new_window = new LLWindowMesaHeadless(
 			title, name, x, y, width, height, flags, 
-			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 #elif LL_SDL
 		new_window = new LLWindowSDL(
 			title, x, y, width, height, flags, 
-			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 #elif LL_WINDOWS
 		new_window = new LLWindowWin32(
 			title, name, x, y, width, height, flags, 
-			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 #elif LL_DARWIN
 		new_window = new LLWindowMacOSX(
 			title, name, x, y, width, height, flags, 
-			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 #elif LL_LINUX
 		new_window = new LLWindowLinux(
 			title, name, x, y, width, height, flags, 
-			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 #endif
 	}
 	else
 	{
 		new_window = new LLWindowHeadless(
 			title, name, x, y, width, height, flags, 
-			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth);
+			fullscreen, clearBg, disable_vsync, use_gl, ignore_pixel_depth, stereo_mode);
 	}
 
 	if (FALSE == new_window->isValid())

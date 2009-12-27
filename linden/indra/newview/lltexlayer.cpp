@@ -290,7 +290,13 @@ BOOL LLTexLayerSetBuffer::render()
 	}
 
 	// reset GL state
-	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+	//********UMICH 3D LAB********
+
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );  
 
 	// we have valid texture data now
@@ -769,6 +775,13 @@ BOOL LLTexLayerSet::render( S32 x, S32 y, S32 width, S32 height )
 	if( !getInfo()->mStaticAlphaFileName.empty() )
 	{
 		LLGLSNoAlphaTest gls_no_alpha_test;
+	
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	//********UMICH 3D LAB********
+
 		glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE );
 		glBlendFunc( GL_ONE, GL_ZERO );
 
@@ -786,8 +799,14 @@ BOOL LLTexLayerSet::render( S32 x, S32 y, S32 width, S32 height )
 			}
 		}
 		LLImageGL::unbindTexture(0, GL_TEXTURE_2D);
-
-		glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+		
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+		//********UMICH 3D LAB********
+	
+		// todo: possible visual artifact
+		//glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 	}
 	else 
@@ -796,11 +815,22 @@ BOOL LLTexLayerSet::render( S32 x, S32 y, S32 width, S32 height )
 		// Set the alpha channel to one (clean up after previous blending)
 		LLGLSNoTextureNoAlphaTest gls_no_alpha;
 		glColor4f( 0.f, 0.f, 0.f, 1.f );
+
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		GLboolean mask[4];
+		glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+		//********UMICH 3D LAB********
 		glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE );
 
 		gl_rect_2d_simple( width, height );
 		
-		glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+		//********UMICH 3D LAB********
+		// todo: possible artifact
+		//glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 	}
 	stop_glerror();
 
@@ -828,11 +858,22 @@ BOOL LLTexLayerSet::renderBump( S32 x, S32 y, S32 width, S32 height )
 	// Set the alpha channel to one (clean up after previous blending)
 	LLGLSNoTextureNoAlphaTest gls_no_texture_no_alpha;
 	glColor4f( 0.f, 0.f, 0.f, 1.f );
+	
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	//********UMICH 3D LAB********
 	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE );
 
 	gl_rect_2d_simple( width, height );
-	
-	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+	//********UMICH 3D LAB********
+	//glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+
 	stop_glerror();
 
 	return success;
@@ -1495,6 +1536,11 @@ BOOL LLTexLayer::renderAlphaMasks( S32 x, S32 y, S32 width, S32 height, LLColor4
 
 	llassert( !mParamAlphaList.empty() );
 
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	//********UMICH 3D LAB********
 	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE );
 
 	alpha_list_t::iterator iter = mParamAlphaList.begin();
@@ -1588,7 +1634,10 @@ BOOL LLTexLayer::renderAlphaMasks( S32 x, S32 y, S32 width, S32 height, LLColor4
 
 	LLGLSUIDefault gls_ui;
 
-	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+	//********UMICH 3D LAB********
 	
 	if (!mMorphMasksValid && !mMaskedMorphs.empty())
 	{

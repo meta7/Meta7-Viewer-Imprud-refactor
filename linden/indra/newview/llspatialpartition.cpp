@@ -2150,6 +2150,13 @@ void LLSpatialPartition::doOcclusion(LLCamera* camera)
 	LLGLDisable blend(GL_BLEND);
 	LLGLDisable alpha_test(GL_ALPHA_TEST);
 	LLGLDisable fog(GL_FOG);
+
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	//********UMICH 3D LAB********
+
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glColor4f(1,1,1,1);
 
@@ -2199,7 +2206,9 @@ void LLSpatialPartition::doOcclusion(LLCamera* camera)
 
 	glFlush();
 
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+	//********UMICH 3D LAB********
+	glColorMask(mask[0], mask[1], mask[2], mask[3]);
+	//********UMICH 3D LAB********
 }
 
 class LLOctreeGet : public LLSpatialGroup::OctreeTraveler

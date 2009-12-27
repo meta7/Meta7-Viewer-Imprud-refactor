@@ -215,7 +215,7 @@ LLWindowSDL::LLWindowSDL(char *title, S32 x, S32 y, S32 width,
 							   S32 height, U32 flags,
 							   BOOL fullscreen, BOOL clearBg,
 							   BOOL disable_vsync, BOOL use_gl,
-							   BOOL ignore_pixel_depth)
+							   BOOL ignore_pixel_depth, S32 stereo_mode)
 	: LLWindow(fullscreen, flags), mGamma(1.0f)
 {
 	// Initialize the keyboard

@@ -95,6 +95,7 @@ public:
 
 protected:
 	LLRadioGroup*	mRadioVideoCardMem;
+	LLRadioGroup*	mCtrlStereoMode;
 
 	BOOL mUseVBO;
 	BOOL mUseAniso;
@@ -105,6 +106,10 @@ protected:
 	S32 mParticleCount;
 	S32 mCompositeLimit;
 	S32 mDebugBeaconLineWidth;
+	S32 mStereoMode;
+	F32 mStereoFocalDistance;
+	F32 mStereoEyeSeparation;
+
 	BOOL mProbeHardwareOnStartup;
 };
 

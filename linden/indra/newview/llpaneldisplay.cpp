@@ -467,6 +467,7 @@ BOOL LLPanelDisplay2::postBuild()
 
 	// Graphics Card Memory
 	mRadioVideoCardMem = LLUICtrlFactory::getRadioGroupByName(this, "video card memory radio");
+	mCtrlStereoMode = LLUICtrlFactory::getRadioGroupByName(this, "stereo mode");
 
 #if !LL_WINDOWS
 	// The probe_hardware_checkbox setting is only used in the Windows build
@@ -500,6 +501,9 @@ void LLPanelDisplay2::refresh()
 	mParticleCount = gSavedSettings.getS32("RenderMaxPartCount");
 	mCompositeLimit = gSavedSettings.getS32("AvatarCompositeLimit");
 	mDebugBeaconLineWidth = gSavedSettings.getS32("DebugBeaconLineWidth");
+	mStereoMode = gSavedSettings.getS32("StereoMode");
+	mStereoFocalDistance = gSavedSettings.getF32("StereoFocalDistance");
+	mStereoEyeSeparation = gSavedSettings.getF32("StereoEyeSeparation");
 	mProbeHardwareOnStartup = gSavedSettings.getBOOL("ProbeHardwareOnStartup");
 
 	refreshEnabledState();
@@ -533,6 +537,8 @@ void LLPanelDisplay2::apply()
 		gViewerWindow->restartDisplay(logged_in);
 	}
 
+	mStereoMode = (S32)mCtrlStereoMode->getValue().asInteger();
+
 	refresh();
 }
 
@@ -548,6 +554,9 @@ void LLPanelDisplay2::cancel()
 	gSavedSettings.setS32("RenderMaxPartCount", mParticleCount);
 	gSavedSettings.setS32("AvatarCompositeLimit", mCompositeLimit);
 	gSavedSettings.setS32("DebugBeaconLineWidth", mDebugBeaconLineWidth);
+	gSavedSettings.setS32("StereoMode", mStereoMode);
+	gSavedSettings.setF32("StereoEyeSeparation", mStereoEyeSeparation);
+	gSavedSettings.setF32("StereoFocalDistance", mStereoFocalDistance);
 	gSavedSettings.setBOOL("ProbeHardwareOnStartup", mProbeHardwareOnStartup );
 }
 

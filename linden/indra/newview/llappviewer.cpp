@@ -2376,14 +2376,17 @@ bool LLAppViewer::initWindow()
 	gViewerWindow = new LLViewerWindow(window_title_str, "Second Life",
 		gSavedSettings.getS32("WindowX"), gSavedSettings.getS32("WindowY"),
 		gSavedSettings.getS32("WindowWidth"), gSavedSettings.getS32("WindowHeight"),
-		FALSE, gIgnorePixelDepth);
+		FALSE, gIgnorePixelDepth, gSavedSettings.getS32("StereoMode"));
 		
 	if (gSavedSettings.getBOOL("FullScreen"))
 	{
 		gViewerWindow->toggleFullscreen(FALSE);
 			// request to go full screen... which will be delayed until login
 	}
-	
+
+	// Stereo mode may turn out to be unusable. In that case, write the new mode (none)
+	gSavedSettings.setS32("StereoMode", gViewerWindow->getWindow()->getStereoMode());
+
 	if (gSavedSettings.getBOOL("WindowMaximized"))
 	{
 		gViewerWindow->mWindow->maximize();

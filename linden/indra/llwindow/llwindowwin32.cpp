@@ -370,7 +370,7 @@ LLWindowWin32::LLWindowWin32(char *title, char *name, S32 x, S32 y, S32 width,
 							 S32 height, U32 flags, 
 							 BOOL fullscreen, BOOL clearBg,
 							 BOOL disable_vsync, BOOL use_gl,
-							 BOOL ignore_pixel_depth)
+							 BOOL ignore_pixel_depth, S32 stereo_mode)
 	: LLWindow(fullscreen, flags)
 {
 	S32 i = 0;
@@ -645,6 +645,12 @@ LLWindowWin32::LLWindowWin32(char *title, char *name, S32 x, S32 y, S32 width,
 	if (use_gl)
 	{
 		pfdflags |= PFD_SUPPORT_OPENGL;
+ 
+		//************ UMICH 3D LAB *************
+		// if our stereo mode is for active/clone mode, then
+		// we need to add a special flag to the pixel format
+		if (mStereoMode == STEREO_MODE_ACTIVE) { pfdflags |= PFD_STEREO; }
+		//************ UMICH 3D LAB *************
 	}
 
 	//-----------------------------------------------------------------------
@@ -1999,6 +2005,7 @@ void LLWindowWin32::gatherInput()
 	}
 
 	mInputProcessingPaused = FALSE;
+	mStereoMode = stereo_mode;
 
 	// clear this once we've processed all mouse messages that might have occurred after
 	// we slammed the mouse position
@@ -2708,6 +2715,12 @@ BOOL LLWindowWin32::convertCoords(LLCoordGL from, LLCoordScreen *to)
 	return TRUE;
 }
 
+	//********** UMICH 3D LAB ***************
+	// if we wanted active stereo, but couldn't get it then
+	// we turn off stereo rendering.
+	if((mStereoMode==STEREO_MODE_ACTIVE) && ((pfd.dwFlags & PFD_STEREO)==0))
+	{	mStereoMode = STEREO_MODE_NONE; }
+	//********** UMICH 3D LAB ****************
 
 BOOL LLWindowWin32::isClipboardTextAvailable()
 {

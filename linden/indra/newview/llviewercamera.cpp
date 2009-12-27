@@ -190,7 +190,9 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 									BOOL limit_select_distance,
 									F32 z_near, F32 z_far)
 {
-	F32 fov_y, aspect;
+	//********* UMICH 3D LAB **********
+	F32 fov_y;//, aspect;
+	//********* UMICH 3D LAB **********
 	fov_y = RAD_TO_DEG * getView();
 	BOOL z_default_near, z_default_far = FALSE;
 	if (z_far <= 0)
@@ -203,7 +205,9 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 		z_default_near = TRUE;
 		z_near = getNear();
 	}
-	aspect = getAspect();
+	//********* UMICH 3D LAB **********
+	//aspect = getAspect();
+	//********* UMICH 3D LAB **********
 
 	// Load camera view matrix
 	glMatrixMode( GL_PROJECTION );
@@ -247,17 +251,35 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 		glScalef(mZoomFactor, mZoomFactor, 1.f);
 	}
 
-	calcProjection(z_far); // Update the projection matrix cache
+	//********* UMICH 3D LAB **********
+	//calcProjection(z_far); // Update the projection matrix cache
 
-	gluPerspective(fov_y,
-				   aspect,
-				   z_near,
-				   z_far);
-	glGetDoublev(GL_PROJECTION_MATRIX, gGLProjection);
-	glGetFloatv(GL_PROJECTION_MATRIX, (float*)&gProjectionMat);
+	//gluPerspective(fov_y,
+	//				 aspect,
+	//				 z_near,
+	//				 z_far);
 	
-	glMatrixMode( GL_MODELVIEW );
+	// compute the frustum planes for a better stereo effect
 
+	F32 eye_separation = gSavedSettings.getF32("StereoEyeSeparation");
+	F32 focal_distance = gSavedSettings.getF32("StereoFocalDistance");
+
+	const float aspect	 = (float)width / (float)height;
+	const float rads	 = 0.01745329251994329577f * (fov_y * .5f);
+	const float wd2		 = z_near * tan(rads);
+	const float ndfl	 = z_near / focal_distance;
+
+	// define frustum
+	float left   = -(aspect * wd2) + (eye_separation/2 * ndfl);
+	float right  =  (aspect * wd2) + (eye_separation/2 * ndfl);
+	float top    =  wd2;
+	float bottom = -wd2;
+
+	glFrustum(left, right, bottom, top, z_near, z_far);
+	//********* UMICH 3D LAB **********
+
+	glGetFloatv(GL_PROJECTION_MATRIX, (float*)&gProjectionMat);
+	glMatrixMode( GL_MODELVIEW );
 	glLoadMatrixf(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
 
 	GLfloat			ogl_matrix[16];
@@ -648,3 +670,52 @@ BOOL LLViewerCamera::areVertsVisible(LLViewerObject* volumep, BOOL all_verts)
 	}
 	return all_verts;
 }
+
+//**************** UMICH 3D LAB **************
+void LLViewerCamera::updateStereoValues()
+{
+	// get the current camera position to calculate the offsets
+	mCameraTempPosition = this->getOrigin();
+
+	// get the last point of iterest to calculate the focal point
+	mStereoLastPOI = mLastPointOfInterest;
+}
+
+void LLViewerCamera::rotateToLeftEye()
+{
+	// Calculate the new position and focal point for the camera (left eye)
+	F32 eye_separation = gSavedSettings.getF32("StereoEyeSeparation");
+	F32 focal_distance = gSavedSettings.getF32("StereoFocalDistance");
+
+	// Translate camera position of half the distance between the 2 eyes
+	LLVector3 new_pos = mCameraTempPosition + eye_separation/2 * (this->getLeftAxis());
+	
+	// New Point of Interest
+	LLVector3 dir = mStereoLastPOI - mCameraTempPosition;
+	dir.normVec();
+	LLVector3 new_poi = mCameraTempPosition + dir * focal_distance;
+    
+	// lookat target
+	this->updateCameraLocation(new_pos, getUpAxis(), new_poi);
+}
+
+void LLViewerCamera::rotateToRightEye()
+{
+	// Calculate the new position and focal point for the camera (right eye)
+	F32 eye_separation = gSavedSettings.getF32("StereoEyeSeparation");
+	F32 focal_distance = gSavedSettings.getF32("StereoFocalDistance");
+
+	// Translate camera position of half the distance between the 2 eyes
+	LLVector3 new_pos = mCameraTempPosition - eye_separation/2 * (this->getLeftAxis());
+
+	// New Point of Interest
+	LLVector3 dir = mStereoLastPOI - mCameraTempPosition;
+	dir.normVec();
+	LLVector3 new_poi = mCameraTempPosition + dir * focal_distance;
+
+	// lookat target
+	this->updateCameraLocation(new_pos, getUpAxis(), new_poi);
+}
+
+//*************** UMICH 3D LAB ******************
+

@@ -77,6 +77,15 @@ enum ECursorType {
 	UI_CURSOR_COUNT			// Number of elements in this enum (NOT a cursor)
 };
 
+enum EStereoMode 
+{ 
+	STEREO_MODE_NONE = 0, 
+	STEREO_MODE_ANAGLYPH = 1, 
+	STEREO_MODE_ACTIVE = 2 
+};
+
+
+
 class LLSplashScreen;
 
 class LLWindow;
@@ -137,6 +146,7 @@ public:
 	{
 		// currently unused
 	};
+
 public:
 	virtual void show() = 0;
 	virtual void hide() = 0;
@@ -228,6 +238,8 @@ public:
 	virtual void setLanguageTextInput( const LLCoordGL & pos ) {};
 	virtual void updateLanguageTextInputArea() {}
 	virtual void interruptLanguageTextInput() {}
+	virtual void setStereoMode( S32 mode ) { mStereoMode = mode; }
+	virtual S32 getStereoMode() const { return mStereoMode; }
 
 protected:
 	LLWindow(BOOL fullscreen, U32 flags);
@@ -258,6 +270,7 @@ protected:
 	F32			mJoyAxis[6]; 
 	U8			mJoyButtonState[16];
 	U16			mHighSurrogate;
+    S32			mStereoMode;
 
  	// Handle a UTF-16 encoding unit received from keyboard.
  	// Converting the series of UTF-16 encoding units to UTF-32 data,
@@ -329,7 +342,8 @@ public:
 		BOOL clearBg = FALSE,
 		BOOL disable_vsync = TRUE,
 		BOOL use_gl = TRUE,
-		BOOL ignore_pixel_depth = FALSE);
+		BOOL ignore_pixel_depth = FALSE,
+		S32 stereo_mode = 0);
 	static LLWindow *createWindow(
 		char* title, char* name, S32 x, S32 y, S32 width, S32 height,
 		U32 flags = 0,
@@ -337,7 +351,8 @@ public:
 		BOOL clearBg = FALSE,
 		BOOL disable_vsync = TRUE,
 		BOOL use_gl = TRUE,
-		BOOL ignore_pixel_depth = FALSE);
+		BOOL ignore_pixel_depth = FALSE,
+		S32 stereo_mode = 0);
 	static BOOL destroyWindow(LLWindow* window);
 	static BOOL isWindowValid(LLWindow *window);
 };

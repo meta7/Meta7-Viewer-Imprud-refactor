@@ -271,12 +271,19 @@ U32 LLViewerJoint::render( F32 pixelArea, BOOL first_pass )
 					triangle_count += drawShape( pixelArea, first_pass);
 				}
 				// second pass writes to z buffer only
+				//********UMICH 3D LAB********
+				// protect the color mask change for correct anaglyph render
+				GLboolean mask[4];
+				glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+				//********UMICH 3D LAB********
 				glColorMask(FALSE, FALSE, FALSE, FALSE);
 				{
 					triangle_count += drawShape( pixelArea, FALSE );
 				}
 				// third past respects z buffer and writes color
-				glColorMask(TRUE, TRUE, TRUE, FALSE);
+				//********UMICH 3D LAB********
+				glColorMask(mask[0], mask[1], mask[2], mask[3]);
+				//********UMICH 3D LAB********
 				{
 					LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
 					triangle_count += drawShape( pixelArea, FALSE );

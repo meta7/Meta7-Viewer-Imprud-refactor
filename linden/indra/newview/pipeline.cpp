@@ -1998,7 +1998,12 @@ void LLPipeline::renderGeom(LLCamera& camera)
 
 	U32 cur_type = 0;
 
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 
 	if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_PICKING))
 	{
@@ -2118,7 +2123,11 @@ void LLPipeline::renderGeom(LLCamera& camera)
 	// have touch-handlers.
 	mHighlightFaces.clear();
 
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 
 	if (!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && 
 		!LLDrawPoolWater::sSkipScreenCopy &&
@@ -3956,7 +3965,12 @@ void LLPipeline::blurReflectionMap(LLCubeMap* cube_in, LLCubeMap* cube_out, U32 
 {
 	LLGLEnable cube(GL_TEXTURE_CUBE_MAP_ARB);
 	LLGLDepthTest depth(GL_FALSE);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();

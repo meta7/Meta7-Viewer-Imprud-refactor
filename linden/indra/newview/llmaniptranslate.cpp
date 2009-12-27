@@ -1645,6 +1645,13 @@ void LLManipTranslate::highlightIntersection(LLVector3 normal,
 		LLGLEnable stencil(GL_STENCIL_TEST);
 		LLGLDepthTest depth (GL_TRUE, GL_FALSE, GL_ALWAYS);
 		glStencilFunc(GL_ALWAYS, 0, stencil_mask);
+
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		GLboolean mask[4];
+		glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+		//********UMICH 3D LAB********
+
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         LLGLDisable tex(GL_TEXTURE_2D);
 		glColor4f(1,1,1,1);
@@ -1696,7 +1703,9 @@ void LLManipTranslate::highlightIntersection(LLVector3 normal,
 			LLPipeline::toggleRenderType(LLPipeline::RENDER_TYPE_CLOUDS);
 		}
 
-		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+		//********UMICH 3D LAB********
+		glColorMask(mask[0], mask[1], mask[2], mask[3]);
+		//********UMICH 3D LAB********
 	}
 
 	glPushMatrix();

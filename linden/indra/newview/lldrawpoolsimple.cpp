@@ -76,7 +76,12 @@ void LLDrawPoolGlow::render(S32 pass)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	gPipeline.enableLightsFullbright(LLColor4(1,1,1,1));
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 	renderTexture(LLRenderPass::PASS_GLOW, getVertexDataMask());
 	renderActive(LLRenderPass::PASS_GLOW, getVertexDataMask());
 
@@ -107,7 +112,11 @@ void LLDrawPoolGlow::render(S32 pass)
 		glow.render();
 	}
 
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 }
@@ -174,10 +183,19 @@ void LLDrawPoolSimple::render(S32 pass)
 		U32 invisi_mask = LLVertexBuffer::MAP_VERTEX;
 		glDisableClientState(GL_COLOR_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		GLboolean mask[4];
+		glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+		//********UMICH 3D LAB********
+
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 		renderInvisible(invisi_mask);
 		renderActive(LLRenderPass::PASS_INVISIBLE, invisi_mask);
-		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+		
+		//********UMICH 3D LAB********
+		glColorMask(mask[0], mask[1], mask[2], mask[3]);
+		//********UMICH 3D LAB********
 	}
 }
 

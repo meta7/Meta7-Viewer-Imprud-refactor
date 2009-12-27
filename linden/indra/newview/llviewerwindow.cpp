@@ -1435,7 +1435,7 @@ LLViewerWindow::LLViewerWindow(
 	char* title, char* name,
 	S32 x, S32 y,
 	S32 width, S32 height,
-	BOOL fullscreen, BOOL ignore_pixel_depth)
+	BOOL fullscreen, BOOL ignore_pixel_depth, S32 stereo_mode)
 	:
 	mActive(TRUE),
 	mWantFullscreen(fullscreen),
@@ -1467,7 +1467,8 @@ LLViewerWindow::LLViewerWindow(
 		gNoRender,
 		gSavedSettings.getBOOL("DisableVerticalSync"),
 		!gNoRender,
-		ignore_pixel_depth);
+		ignore_pixel_depth,
+		stereo_mode);
 #if LL_WINDOWS
 	if (!LLWinDebug::setupExceptionHandler())
 	{

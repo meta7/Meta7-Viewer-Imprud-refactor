@@ -1498,6 +1498,10 @@ void declare_settings()
 	gSavedSettings.declareBOOL("VectorizeSkin", TRUE, "Enable vector operations for avatar skinning.");
 	gSavedSettings.declareU32( "VectorizeProcessor", 0, "0=Compiler Default, 1=SSE, 2=SSE2, autodetected", NO_PERSIST);
 
+	gSavedSettings.declareS32("StereoMode", 0, "Stereo mode. 0: None, 1: Anaglyph, 2: Active");
+	gSavedSettings.declareF32("StereoEyeSeparation", 0.065f, "Stereo eye separation");
+	gSavedSettings.declareF32("StereoFocalDistance", 6.0f, "Stereo focal distance");
+
 	//
 	// crash_settings.xml
 	//

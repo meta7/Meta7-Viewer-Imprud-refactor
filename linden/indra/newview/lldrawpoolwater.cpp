@@ -498,7 +498,12 @@ void LLDrawPoolWater::renderReflection(LLFace* face)
 
 void LLDrawPoolWater::shade()
 {
-	glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		GLboolean mask[4];
+		glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+		glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+		//********UMICH 3D LAB********
 
 	static LLVector2 d1( 0.5f, -0.17f );
 	static LLVector2 d2( 0.58f, -0.67f );
@@ -659,7 +664,11 @@ void LLDrawPoolWater::shade()
 	
 	glClientActiveTextureARB(GL_TEXTURE0_ARB);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_FALSE);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 }
 
 void LLDrawPoolWater::renderForSelect()

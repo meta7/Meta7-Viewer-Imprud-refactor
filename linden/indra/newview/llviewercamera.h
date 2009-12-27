@@ -94,6 +94,14 @@ public:
 	F32 getZoomFactor() { return mZoomFactor; }                             
 	S16 getZoomSubRegion() { return mZoomSubregion; } 
 
+	//************ UMICH 3D LAB ****************
+	// Camera Rotations for stereo view
+	void updateStereoValues();
+	void rotateToLeftEye();
+	void rotateToRightEye();
+
+	//************ UMICH 3D LAB ****************
+
 protected:
 	void calcProjection(const F32 far_distance) const;
 
@@ -102,11 +110,16 @@ protected:
 	mutable LLMatrix4	mProjectionMatrix;	// Cache of perspective matrix
 	mutable LLMatrix4	mModelviewMatrix;
 	F32					mCameraFOVDefault;
-	LLVector3			mLastPointOfInterest;
+	LLVector3		mLastPointOfInterest;
 	F32					mPixelMeterRatio; // Divide by distance from camera to get pixels per meter at that distance.
 	S32					mScreenPixelArea; // Pixel area of entire window
 	F32					mZoomFactor;
 	S16					mZoomSubregion;
+	
+	//************ UMICH 3D LAB ****************
+	LLVector3		mCameraTempPosition;
+	LLVector3		mStereoLastPOI;
+	//************ UMICH 3D LAB ****************
 
 public:
 	F64		mGLProjectionMatrix[16];
