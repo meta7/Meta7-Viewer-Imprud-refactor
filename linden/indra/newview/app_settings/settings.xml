@@ -9606,6 +9606,39 @@
       <key>Value</key>
       <integer>26</integer>
     </map>
+    <key>StereoMode</key>
+    <map>
+      <key>Comment</key>
+      <string>Stereo mode. 0: None, 1: Anaglyph, 2: Active</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>StereoEyeSeparation</key>
+    <map>
+      <key>Comment</key>
+      <string>Stereo eye separation</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <integer>0.065</integer>
+    </map>
+    <key>StereoFocalDistance</key>
+    <map>
+      <key>Comment</key>
+      <string>Stereo focal distance</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <integer>6.0</integer>
+    </map>
     <key>StatusBarPad</key>
     <map>
       <key>Comment</key>

@@ -67,10 +67,25 @@ void LLDrawPoolGlow::render(S32 pass)
 	}
 
 	LLGLDepthTest depth(GL_TRUE, GL_FALSE);
+
 	gGL.setColorMask(false, true);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
+
 	renderTexture(LLRenderPass::PASS_GLOW, getVertexDataMask());
-	
+
 	gGL.setColorMask(true, false);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
+
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
 	
 	if (shader_level > 0 && fullbright_shader)

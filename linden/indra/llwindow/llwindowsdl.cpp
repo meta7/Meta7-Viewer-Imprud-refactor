@@ -193,7 +193,8 @@ LLWindowSDL::LLWindowSDL(const std::string& title, S32 x, S32 y, S32 width,
 			 S32 height, U32 flags,
 			 BOOL fullscreen, BOOL clearBg,
 			 BOOL disable_vsync, BOOL use_gl,
-			 BOOL ignore_pixel_depth, U32 fsaa_samples)
+			 BOOL ignore_pixel_depth, U32 fsaa_samples,
+			 S32 stereo_mode)
 	: LLWindow(fullscreen, flags), Lock_Display(NULL),
 	  Unlock_Display(NULL), mGamma(1.0f)
 {

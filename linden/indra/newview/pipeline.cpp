@@ -2587,6 +2587,13 @@ void LLPipeline::renderGeom(LLCamera& camera, BOOL forceVBOUpdate)
 		}
 	}
 
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
+
 	if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_PICKING))
 	{
 		LLAppViewer::instance()->pingMainloopTimeout("Pipeline:RenderForSelect");
@@ -2721,6 +2728,12 @@ void LLPipeline::renderGeom(LLCamera& camera, BOOL forceVBOUpdate)
 	LLAppViewer::instance()->pingMainloopTimeout("Pipeline:RenderDebug");
 	
 	renderDebug();
+
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 
 	LLVertexBuffer::unbind();
 	
@@ -5288,6 +5301,13 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index)
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
+
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 
 	channel = shader.enableTexture(LLViewerShaderMgr::DEFERRED_SPECULAR, LLTexUnit::TT_RECT_TEXTURE);
 	if (channel > -1)

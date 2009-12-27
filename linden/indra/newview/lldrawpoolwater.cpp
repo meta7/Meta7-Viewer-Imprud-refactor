@@ -338,7 +338,15 @@ void LLDrawPoolWater::renderReflection(LLFace* face)
 
 void LLDrawPoolWater::shade()
 {
+
 	gGL.setColorMask(true, true);
+
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 
 	LLVOSky *voskyp = gSky.mVOSkyp;
 
@@ -580,6 +588,11 @@ void LLDrawPoolWater::shade()
 	gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
 	gGL.setColorMask(true, false);
 
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_FALSE);
+	//********UMICH 3D LAB********
 }
 
 void LLDrawPoolWater::renderForSelect()

@@ -459,14 +459,48 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	// clear the next buffer
 	// (must follow dynamic texture writing since that uses the frame buffer)
 	//
-
 	if (gDisconnected)
 	{
 		LLAppViewer::instance()->pingMainloopTimeout("Display:Disconnected");
 		render_ui();
 		render_disconnected_background();
 	}
+<<<<<<< HEAD
 	
+=======
+	else if (!gViewerWindow->isPickPending())
+	{
+		glClear( GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+		//DEBUG TEMPORARY
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+	gViewerWindow->setupViewport();
+
+
+	//************ UMICH 3D LAB ****************
+	if (gSavedSettings.getS32("StereoMode") > 0)
+	{
+		//*** RIGHT EYE ***
+		if (gSavedSettings.getS32("StereoMode") == STEREO_MODE_ACTIVE)
+		{
+			// Draw to the right buffer (right eye)
+			glDrawBuffer(GL_BACK_RIGHT);
+			glClear( GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+		}
+		else
+		{
+			// setup our color mask for anaglyph
+			glColorMask(GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE);
+		}
+		
+		// Rotate the camera to simulate the right eye
+		gCamera->updateStereoValues();
+		gCamera->rotateToRightEye();
+	}
+	//************ UMICH 3D LAB ****************
+
+
+>>>>>>> stereo
 	//////////////////////////
 	//
 	// Set rendering options
@@ -963,9 +997,230 @@ void render_hud_attachments()
 	glh_set_current_modelview(current_mod);
 }
 
+<<<<<<< HEAD
 BOOL setup_hud_matrices()
 {
 	LLRect whole_screen = gViewerWindow->getVirtualWindowRect();
+=======
+
+
+//************ UMICH 3D LAB ****************
+	// Render for second eye
+	if (gSavedSettings.getS32("StereoMode") > 0)
+	{
+
+		/////////////////////////////
+		//
+		// Update the camera
+		//
+		//
+		gCamera->setZoomParameters(zoom_factor, subfield);
+		gCamera->setNear(MIN_NEAR_PLANE);
+
+		//////////////////////////
+		//
+		// clear the next buffer
+		// (must follow dynamic texture writing since that uses the frame buffer)
+		//
+		gViewerWindow->setupViewport();
+
+		//*** LEFT EYE ***
+		if (gSavedSettings.getS32("StereoMode")==STEREO_MODE_ACTIVE)
+		{
+			// Draw to the left buffer (left eye)
+			glDrawBuffer(GL_BACK_LEFT);
+			glClear( GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+		}
+		else
+		{
+			glClear(GL_DEPTH_BUFFER_BIT);
+			glColorMask(GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE);
+		}
+						
+		// Rotate the camera to simulate the left eye
+		gCamera->rotateToLeftEye();
+
+
+		//////////////////////////
+		//
+		// Set rendering options
+		//
+		//
+		stop_glerror();
+		if (gSavedSettings.getBOOL("ShowDepthBuffer"))
+		{
+			pre_show_depth_buffer();
+		}
+
+		if(gUseWireframe)//gSavedSettings.getBOOL("UseWireframe"))
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			LLPipeline::sUseOcclusion = FALSE;
+		}
+		else
+		{
+			LLPipeline::sUseOcclusion = gSavedSettings.getBOOL("UseOcclusion") && gGLManager.mHasOcclusionQuery;
+		}
+
+		stop_glerror();
+
+
+		///////////////////////////////////////
+		//
+		// Slam lighting parameters back to our defaults.
+		// Note that these are not the same as GL defaults...
+
+		stop_glerror();
+//		F32 one[4] =	{1.f, 1.f, 1.f, 1.f};
+		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,one);
+		stop_glerror();
+		
+		//Increment drawable frame counter
+		LLDrawable::incrementVisible();
+
+		/////////////////////////////////////
+		//
+		// Render
+		//
+		// Actually push all of our triangles to the screen.
+		//
+		if (!gDisconnected)
+		{
+			if (gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_HUD))
+			{ //don't draw hud objects in this frame
+				gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_HUD);
+			}
+			
+			LLFastTimer t(LLFastTimer::FTM_WORLD_UPDATE);
+			stop_glerror();
+			display_update_camera();
+			stop_glerror();
+			
+			// *TODO: merge these two methods
+			gHUDManager->updateEffects();
+			LLHUDObject::updateAll();
+			stop_glerror();
+			
+			gFrameStats.start(LLFrameStats::UPDATE_GEOM);
+			const F32 max_geom_update_time = 0.005f; // 5 ms update time
+			gPipeline.updateGeom(max_geom_update_time);
+			stop_glerror();
+			
+			LLSpatialPartition* part = gPipeline.getSpatialPartition(LLPipeline::PARTITION_VOLUME);
+			part->processImagery(gCamera);
+
+			display_update_camera();
+
+			gFrameStats.start(LLFrameStats::UPDATE_CULL);
+			gPipeline.updateCull(*gCamera);
+			stop_glerror();
+			
+			///////////////////////////////////
+			//
+			// StateSort
+			//
+			// Responsible for taking visible objects, and adding them to the appropriate draw orders.
+			// In the case of alpha objects, z-sorts them first.
+			// Also creates special lists for outlines and selected face rendering.
+			//
+			{
+				LLFastTimer t(LLFastTimer::FTM_REBUILD);
+				
+				gFrameStats.start(LLFrameStats::STATE_SORT);
+				gPipeline.stateSort(*gCamera);
+				stop_glerror();
+					
+				if (rebuild)
+				{
+					//////////////////////////////////////
+					//
+					// rebuildPools
+					//
+					//
+					gFrameStats.start(LLFrameStats::REBUILD);
+					gPipeline.rebuildPools();
+					stop_glerror();
+				}
+			}
+		}
+
+		if (! (LLAppViewer::instance()->logoutRequestSent() && LLAppViewer::instance()->hasSavedFinalSnapshot())
+				&& !gRestoreGL
+				&& !gDisconnected)
+		{
+			gPipeline.renderGeom(*gCamera);
+			stop_glerror();
+		}
+
+		//render hud attachments
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		if (LLPipeline::sShowHUDAttachments && !gDisconnected && setup_hud_matrices(FALSE))
+		{
+			LLCamera hud_cam = *gCamera;
+			glClear(GL_DEPTH_BUFFER_BIT);
+			LLVector3 origin = hud_cam.getOrigin();
+			hud_cam.setOrigin(-1.f,0,0);
+			hud_cam.setAxes(LLVector3(1,0,0), LLVector3(0,1,0), LLVector3(0,0,1));
+			LLViewerCamera::updateFrustumPlanes(hud_cam, TRUE);
+			//only render hud objects
+			U32 mask = gPipeline.getRenderTypeMask();
+			gPipeline.setRenderTypeMask(0);
+			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_HUD);
+
+			BOOL has_ui = gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
+			if (has_ui)
+			{
+				gPipeline.toggleRenderDebugFeature((void*) LLPipeline::RENDER_DEBUG_FEATURE_UI);
+			}
+
+			BOOL use_occlusion = gSavedSettings.getBOOL("UseOcclusion");
+			gSavedSettings.setBOOL("UseOcclusion", FALSE);
+
+			//cull, sort, and render hud objects
+			gPipeline.updateCull(hud_cam);
+
+			gPipeline.toggleRenderType(LLDrawPool::POOL_ALPHA_POST_WATER);
+			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_BUMP);
+			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_SIMPLE);
+			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_VOLUME);
+			
+			{
+				LLFastTimer ftm(LLFastTimer::FTM_REBUILD);
+				gPipeline.stateSort(hud_cam);
+			}
+			
+			gPipeline.renderGeom(hud_cam);
+
+			//restore type mask
+			gPipeline.setRenderTypeMask(mask);
+			if (has_ui)
+			{
+				gPipeline.toggleRenderDebugFeature((void*) LLPipeline::RENDER_DEBUG_FEATURE_UI);
+			}
+			gSavedSettings.setBOOL("UseOcclusion", use_occlusion);
+		}
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+
+		// standard rendering for UI
+		if (gSavedSettings.getS32("StereoMode")==STEREO_MODE_ACTIVE)
+		{
+			glDrawBuffer(GL_BACK);
+		}
+		else
+		{
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+		}
+	}
+	//************ UMICH 3D LAB ****************
+
+	gFrameStats.start(LLFrameStats::RENDER_UI);
+>>>>>>> stereo
 
 	// apply camera zoom transform (for high res screenshots)
 	F32 zoom_factor = LLViewerCamera::getInstance()->getZoomFactor();

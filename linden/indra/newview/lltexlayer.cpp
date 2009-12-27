@@ -324,6 +324,13 @@ BOOL LLTexLayerSetBuffer::render()
 
 	// reset GL state
 	gGL.setColorMask(true, true);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+	//********UMICH 3D LAB********
+
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
 
 	// we have valid texture data now
@@ -826,6 +833,11 @@ BOOL LLTexLayerSet::render( S32 x, S32 y, S32 width, S32 height )
 		LLGLSNoAlphaTest gls_no_alpha_test;
 		gGL.flush();
 		gGL.setColorMask(false, true);
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		GLboolean mask[4];
+		glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+		//********UMICH 3D LAB********
 		gGL.setSceneBlendType(LLRender::BT_REPLACE);
 
 		{
@@ -847,6 +859,10 @@ BOOL LLTexLayerSet::render( S32 x, S32 y, S32 width, S32 height )
 
 		gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
 		gGL.setColorMask(true, true);
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+		//********UMICH 3D LAB********
 		gGL.setSceneBlendType(LLRender::BT_ALPHA);
 	}
 	else 
@@ -857,6 +873,11 @@ BOOL LLTexLayerSet::render( S32 x, S32 y, S32 width, S32 height )
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 		gGL.color4f( 0.f, 0.f, 0.f, 1.f );
 		gGL.flush();
+		//********UMICH 3D LAB********
+		// protect the color mask change for correct anaglyph render
+		GLboolean mask[4];
+		glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+		//********UMICH 3D LAB********
 		gGL.setColorMask(false, true);
 
 		gl_rect_2d_simple( width, height );
@@ -888,6 +909,7 @@ BOOL LLTexLayerSet::renderBump( S32 x, S32 y, S32 width, S32 height )
 	}
 
 	// Set the alpha channel to one (clean up after previous blending)
+<<<<<<< HEAD
 	LLGLDisable no_alpha(GL_ALPHA_TEST);
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 	gGL.color4f( 0.f, 0.f, 0.f, 1.f );
@@ -896,6 +918,13 @@ BOOL LLTexLayerSet::renderBump( S32 x, S32 y, S32 width, S32 height )
 	gl_rect_2d_simple( width, height );
 	
 	gGL.setColorMask(true, true);
+
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	//********UMICH 3D LAB********
+
 	stop_glerror();
 
 	return success;
@@ -1573,6 +1602,12 @@ BOOL LLTexLayer::renderAlphaMasks( S32 x, S32 y, S32 width, S32 height, LLColor4
 
 	gGL.setColorMask(false, true);
 
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	GLboolean mask[4];
+	glGetBooleanv(GL_COLOR_WRITEMASK,mask);
+	//********UMICH 3D LAB********
+
 	alpha_list_t::iterator iter = mParamAlphaList.begin();
 	LLTexLayerParamAlpha* first_param = *iter;
 
@@ -1669,6 +1704,10 @@ BOOL LLTexLayer::renderAlphaMasks( S32 x, S32 y, S32 width, S32 height, LLColor4
 	LLGLSUIDefault gls_ui;
 
 	gGL.setColorMask(true, true);
+	//********UMICH 3D LAB********
+	// protect the color mask change for correct anaglyph render
+	glColorMask(mask[0], mask[1], mask[2], GL_TRUE);
+	//********UMICH 3D LAB********
 	
 	if (!mMorphMasksValid && !mMaskedMorphs.empty())
 	{

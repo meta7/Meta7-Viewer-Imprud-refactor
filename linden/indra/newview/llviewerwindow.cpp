@@ -1190,7 +1190,7 @@ LLViewerWindow::LLViewerWindow(
 	const std::string& title, const std::string& name,
 	S32 x, S32 y,
 	S32 width, S32 height,
-	BOOL fullscreen, BOOL ignore_pixel_depth)
+	BOOL fullscreen, BOOL ignore_pixel_depth, S32 stereo_mode)
 	:
 	mActive(TRUE),
 	mWantFullscreen(fullscreen),
@@ -1234,7 +1234,8 @@ LLViewerWindow::LLViewerWindow(
 		gSavedSettings.getBOOL("DisableVerticalSync"),
 		!gNoRender,
 		ignore_pixel_depth,
-		gSavedSettings.getU32("RenderFSAASamples"));
+		gSavedSettings.getU32("RenderFSAASamples"),
+		stereo_mode);
 
 	if (!LLAppViewer::instance()->restoreErrorTrap())
 	{

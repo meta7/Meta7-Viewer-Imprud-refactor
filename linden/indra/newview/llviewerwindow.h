@@ -133,7 +133,7 @@ public:
 	//
 	// CREATORS
 	//
-	LLViewerWindow(const std::string& title, const std::string& name, S32 x, S32 y, S32 width, S32 height, BOOL fullscreen, BOOL ignore_pixel_depth);
+	LLViewerWindow(const std::string& title, const std::string& name, S32 x, S32 y, S32 width, S32 height, BOOL fullscreen, BOOL ignore_pixel_depth, S32 stereo_mode);
 	virtual ~LLViewerWindow();
 
 	void			shutdownViews();

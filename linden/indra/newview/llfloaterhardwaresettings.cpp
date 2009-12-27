@@ -82,6 +82,9 @@ void LLFloaterHardwareSettings::refresh()
 	mGamma = gSavedSettings.getF32("RenderGamma");
 	mVideoCardMem = gSavedSettings.getS32("TextureMemory");
 	mFogRatio = gSavedSettings.getF32("RenderFogRatio");
+	mStereoMode = gSavedSettings.getS32("StereoMode");
+	mStereoFocalDistance = gSavedSettings.getF32("StereoFocalDistance");
+	mStereoEyeSeparation = gSavedSettings.getF32("StereoEyeSeparation");
 	mProbeHardwareOnStartup = gSavedSettings.getBOOL("ProbeHardwareOnStartup");
 
 	childSetValue("fsaa", (LLSD::Integer) mFSAASamples);
@@ -201,6 +204,9 @@ void LLFloaterHardwareSettings::cancel()
 	gSavedSettings.setF32("RenderGamma", mGamma);
 	gSavedSettings.setS32("TextureMemory", mVideoCardMem);
 	gSavedSettings.setF32("RenderFogRatio", mFogRatio);
+	gSavedSettings.setS32("StereoMode", mStereoMode);
+	gSavedSettings.setF32("StereoEyeSeparation", mStereoEyeSeparation);
+	gSavedSettings.setF32("StereoFocalDistance", mStereoFocalDistance);
 	gSavedSettings.setBOOL("ProbeHardwareOnStartup", mProbeHardwareOnStartup );
 
 	close();

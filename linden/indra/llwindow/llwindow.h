@@ -38,6 +38,15 @@
 #include "llstring.h"
 #include "llcursortypes.h"
 
+enum EStereoMode 
+{ 
+	STEREO_MODE_NONE = 0, 
+	STEREO_MODE_ANAGLYPH = 1, 
+	STEREO_MODE_ACTIVE = 2 
+};
+
+
+
 class LLSplashScreen;
 
 class LLWindow;
@@ -106,6 +115,7 @@ public:
 	{
 		// currently unused
 	};
+
 public:
 	virtual void show() = 0;
 	virtual void hide() = 0;
@@ -207,6 +217,10 @@ public:
 
 	static std::vector<std::string> getDynamicFallbackFontList();
 
+	virtual void setStereoMode( S32 mode ) { mStereoMode = mode; }
+	virtual S32 getStereoMode() const { return mStereoMode; }
+
+
 protected:
 	LLWindow(BOOL fullscreen, U32 flags);
 	virtual ~LLWindow() {}
@@ -234,6 +248,7 @@ protected:
 	BOOL		mHideCursorPermanent;
 	U32			mFlags;
 	U16			mHighSurrogate;
+	S32			mStereoMode;
 
  	// Handle a UTF-16 encoding unit received from keyboard.
  	// Converting the series of UTF-16 encoding units to UTF-32 data,
@@ -305,7 +320,8 @@ public:
 		BOOL clearBg = FALSE,
 		BOOL disable_vsync = TRUE,
 		BOOL use_gl = TRUE,
-		BOOL ignore_pixel_depth = FALSE);
+		BOOL ignore_pixel_depth = FALSE,
+		S32 stereo_mode = 0);
 	static LLWindow *createWindow(
 		const std::string& title, const std::string& name, S32 x, S32 y, S32 width, S32 height,
 		U32 flags = 0,
@@ -314,7 +330,8 @@ public:
 		BOOL disable_vsync = TRUE,
 		BOOL use_gl = TRUE,
 		BOOL ignore_pixel_depth = FALSE,
-		U32 fsaa_samples = 0);
+		U32 fsaa_samples = 0,
+		S32 stereo_mode = 0);
 	static BOOL destroyWindow(LLWindow* window);
 	static BOOL isWindowValid(LLWindow *window);
 };

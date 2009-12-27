@@ -86,6 +86,7 @@ public:
 
 protected:
 	LLSliderCtrl*	mCtrlVideoCardMem;
+	LLRadioGroup*	mCtrlStereoMode;
 
 	BOOL mUseVBO;
 	BOOL mUseAniso;
@@ -93,6 +94,9 @@ protected:
 	F32 mGamma;
 	S32 mVideoCardMem;
 	F32 mFogRatio;
+	S32 mStereoMode;
+	F32 mStereoFocalDistance;
+	F32 mStereoEyeSeparation;
 	BOOL mProbeHardwareOnStartup;
 
 private:
