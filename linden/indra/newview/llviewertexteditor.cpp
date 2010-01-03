@@ -678,7 +678,7 @@ BOOL LLViewerTextEditor::handleMouseDown(S32 x, S32 y, MASK mask)
 	// enable I Agree checkbox if the user scrolled through entire text
 	BOOL was_scrolled_to_bottom = (mScrollbar->getDocPos() == mScrollbar->getDocPosMax());
 
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if (mOnScrollEndCallback && was_scrolled_to_bottom)
 	{
@@ -935,7 +935,7 @@ BOOL LLViewerTextEditor::handleMouseUp(S32 x, S32 y, MASK mask)
 	// Used to enable I Agree checkbox if the user scrolled through entire text
 	BOOL was_scrolled_to_bottom = (mScrollbar->getDocPos() == mScrollbar->getDocPosMax());
 
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if (mOnScrollEndCallback && was_scrolled_to_bottom)
 	{

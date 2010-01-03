@@ -180,7 +180,8 @@ void LLCheckBoxCtrl::onCommit()
 	{
 		setTentative(FALSE);
 
-		LL_TRACE_XUI;
+		std::string value = getValue().asString();
+		traceXUI(__FUNCTION__, "on_commit", &value);
 
 		LLUICtrl::onCommit();
 	}

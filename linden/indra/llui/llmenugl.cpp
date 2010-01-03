@@ -874,7 +874,15 @@ void LLMenuItemCallGL::doIt( void )
 	// RN: menu item can be deleted in callback, so beware
 	getMenu()->setItemLastSelected( this );
 
-	LL_TRACE_XUI;
+	if (getType() == "check")
+	{
+		std::string value = mDrawBoolLabel.getString();
+		traceXUI(__FUNCTION__, "on_commit", &value);
+	}
+	else
+	{
+		traceXUI(__FUNCTION__, "on_commit", NULL);
+	}
 
 	if( mCallback )
 	{
@@ -912,7 +920,7 @@ BOOL LLMenuItemCallGL::handleAcceleratorKey( KEY key, MASK mask )
 		LLPointer<LLEvent> fired_event = new LLEvent(this);
 		fireEvent(fired_event, "on_build");
 
-		LL_TRACE_XUI;
+		LL_TRACE_XUI_DETAIL;
 
 		if( mEnabledCallback )
 		{

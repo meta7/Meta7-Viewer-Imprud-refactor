@@ -375,7 +375,8 @@ void LLSpinCtrl::onCommit()
 	setTentative(FALSE);
 	setControlValue(mValue);
 
-	LL_TRACE_XUI;
+	std::string value = getValue().asString();
+	traceXUI(__FUNCTION__, "on_commit", &value);
 
 	LLUICtrl::onCommit();
 }

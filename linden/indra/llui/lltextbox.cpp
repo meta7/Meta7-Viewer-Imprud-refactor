@@ -98,7 +98,7 @@ BOOL LLTextBox::handleMouseDown(S32 x, S32 y, MASK mask)
 	// HACK: Only do this if there actually is a click callback, so that
 	// overly large text boxes in the older UI won't start eating clicks.
 
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if (mClickedCallback)
 	{
@@ -126,7 +126,7 @@ BOOL LLTextBox::handleMouseUp(S32 x, S32 y, MASK mask)
 	// HACK: Only do this if there actually is a click callback, so that
 	// overly large text boxes in the older UI won't start eating clicks.
 
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if (mClickedCallback
 		&& hasMouseCapture())
@@ -144,7 +144,7 @@ BOOL LLTextBox::handleMouseUp(S32 x, S32 y, MASK mask)
 		// DO THIS AT THE VERY END to allow the button to be destroyed as a result of being clicked.
 		// If mouseup in the widget, it's been clicked
 
-		LL_TRACE_XUI;
+		traceXUI(__FUNCTION__, "on_commit", NULL);
 
 		if (mClickedCallback)
 		{

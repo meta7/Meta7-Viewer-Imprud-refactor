@@ -1162,7 +1162,8 @@ BOOL LLTabContainer::selectTab(S32 which)
 
 	mNextTabIdx = which;
 
-	LL_TRACE_XUI;
+	std::string value = selected_tuple->mTabPanel->getName();
+	traceXUI(__FUNCTION__, "on_commit", &value);
 
 	selected_tuple->mPrecommitChangeCallback(selected_tuple->mUserData, false);
 	return TRUE;
@@ -1253,7 +1254,8 @@ BOOL LLTabContainer::setTab(S32 which)
 			i++;
 		}
 
-		LL_TRACE_XUI;
+		std::string value = selected_tuple->mTabPanel->getName();
+		traceXUI(__FUNCTION__, "on_commit", &value);
 
 		if( selected_tuple->mOnChangeCallback )
 		{
@@ -1427,7 +1429,7 @@ void LLTabContainer::onCloseBtn( void* userdata )
 {
 	LLTabContainer* self = (LLTabContainer*) userdata;
 
-	self->LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL_STATIC(self);
 
 	if( self->mCloseCallback )
 	{
@@ -1440,8 +1442,6 @@ void LLTabContainer::onNextBtn( void* userdata )
 {
 	// Scroll tabs to the left
 	LLTabContainer* self = (LLTabContainer*) userdata;
-
-	self->LL_TRACE_XUI;
 
 	if (!self->mScrolled)
 	{

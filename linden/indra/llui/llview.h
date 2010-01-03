@@ -429,9 +429,12 @@ public:
 	virtual void initFromXML(LLXMLNodePtr node, LLView* parent);
 	void parseFollowsFlags(LLXMLNodePtr node);
 
-	// set LL_TRACE_XUI_DETAIL to LL_TRACE_XUI to get detailed tracing
 #define LL_TRACE_XUI traceXUI(__FUNCTION__, "action", NULL)
 #define LL_TRACE_XUI_DETAIL
+#define LL_TRACE_XUI_DETAIL_STATIC(instance)
+	// Use the following to get detailed tracing
+	// #define LL_TRACE_XUI_DETAIL LL_TRACE_XUI
+	// #define LL_TRACE_XUI_DETAIL_STATIC(instance) instance->LL_TRACE_XUI
 
 	static void setGlobalTraceConsoleCallback( void (*callback)(trace_info&, void*), void* userdata);
 	static void* getGlobalTraceConsoleUserdata();

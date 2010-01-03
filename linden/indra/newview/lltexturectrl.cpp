@@ -1236,7 +1236,22 @@ void LLTextureCtrl::onFloaterCommit(ETexturePickOp op)
 			mImageAssetID = floaterp->getAssetID();
 			lldebugs << "mImageAssetID: " << mImageAssetID << llendl;
 
-			LL_TRACE_XUI;
+			std::string value = mImageItemID.asString() + " " + mImageAssetID.asString();
+
+			if (op == TEXTURE_CANCEL)
+			{
+				value = "CANCEL " + value;
+			}
+			else if (op == TEXTURE_SELECT)
+			{
+				value = "SELECT " + value;
+			}
+			else
+			{
+				value = "CHANGE " + value;
+			}
+
+			traceXUI(__FUNCTION__, "on_commit", &value);
 
 			if (op == TEXTURE_SELECT && mOnSelectCallback)
 			{
@@ -1290,7 +1305,8 @@ BOOL LLTextureCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask,
 				// there is now only one texture selected.
 				setTentative( FALSE );
 
-				LL_TRACE_XUI;
+				std::string value = "SELECT " + mImageItemID.asString() + " " + mImageAssetID.asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
 
 				onCommit();
 			}
@@ -1397,7 +1413,7 @@ BOOL LLTextureCtrl::allowDrop(LLInventoryItem* item)
 	PermissionMask filter_perm_mask = mImmediateFilterPermMask;
 	if ( (item_perm_mask & filter_perm_mask) == filter_perm_mask )
 	{
-		LL_TRACE_XUI;
+		LL_TRACE_XUI_DETAIL;
 
 		if(mDragCallback)
 		{
@@ -1418,7 +1434,7 @@ BOOL LLTextureCtrl::doDrop(LLInventoryItem* item)
 {
 	// call the callback if it exists.
 
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if(mDropCallback)
 	{

@@ -232,7 +232,7 @@ void LLButton::onCommit()
 	// panel containing it.  Therefore we need to call mClickedCallback
 	// LAST, otherwise this becomes deleted memory.
 
-	LL_TRACE_XUI;
+	traceXUI(__FUNCTION__, "on_commit", NULL);
 
 	LLUICtrl::onCommit();
 
@@ -276,7 +276,7 @@ BOOL LLButton::handleUnicodeCharHere(llwchar uni_char)
 	if(' ' == uni_char 
 		&& !gKeyboard->getKeyRepeated(' '))
 	{
-		LL_TRACE_XUI;
+		traceXUI(__FUNCTION__, "on_space", NULL);
 
 		if (mIsToggle)
 		{
@@ -297,7 +297,7 @@ BOOL LLButton::handleKeyHere(KEY key, MASK mask )
 	BOOL handled = FALSE;
 	if( mCommitOnReturn && KEY_RETURN == key && mask == MASK_NONE && !gKeyboard->getKeyRepeated(key))
 	{
-		LL_TRACE_XUI;
+		traceXUI(__FUNCTION__, "on_return", NULL);
 
 		if (mIsToggle)
 		{
@@ -317,7 +317,7 @@ BOOL LLButton::handleKeyHere(KEY key, MASK mask )
 
 BOOL LLButton::handleMouseDown(S32 x, S32 y, MASK mask)
 {
-	LL_TRACE_XUI;
+	traceXUI(__FUNCTION__, "on_click", NULL);
 
 	// Route future Mouse messages here preemptively.  (Release on mouse up.)
 	gFocusMgr.setMouseCapture( this );
@@ -349,7 +349,7 @@ BOOL LLButton::handleMouseUp(S32 x, S32 y, MASK mask)
 	// We only handle the click if the click both started and ended within us
 	if( hasMouseCapture() )
 	{
-		LL_TRACE_XUI;
+		traceXUI(__FUNCTION__, "on_release", NULL);
 
 		// Always release the mouse
 		gFocusMgr.setMouseCapture( NULL );

@@ -178,7 +178,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
-				LL_TRACE_XUI;
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
 
 				onCommit();
 			}
@@ -191,7 +192,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
-				LL_TRACE_XUI;
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
 
 				onCommit();
 			}
@@ -204,7 +206,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
-				LL_TRACE_XUI;
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
 
 				onCommit();
 			}
@@ -217,7 +220,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
-				LL_TRACE_XUI;
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
 
 				onCommit();
 			}
