@@ -341,6 +341,21 @@ LLSD LLRadioGroup::getValue() const
 }
 
 // virtual
+void LLRadioGroup::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	LLUICtrl::setTrace(callback, userdata);
+
+	for (button_list_t::const_iterator iter = mRadioButtons.begin();
+		 iter != mRadioButtons.end(); ++iter)
+	{
+		LLRadioCtrl* radio = *iter;
+
+		radio->setTrace(callback, userdata);
+	}
+}
+
+
+// virtual
 LLXMLNodePtr LLRadioGroup::getXML(bool save_children) const
 {
 	LLXMLNodePtr node = LLUICtrl::getXML();

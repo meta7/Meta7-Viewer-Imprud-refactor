@@ -331,6 +331,8 @@ BOOL LLMultiSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 	{
 		gFocusMgr.setMouseCapture( NULL );
 
+		LL_TRACE_XUI;
+
 		if( mMouseUpCallback )
 		{
 			mMouseUpCallback( this, mCallbackUserData );
@@ -353,6 +355,9 @@ BOOL LLMultiSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	{
 		setFocus(TRUE);
 	}
+
+	LL_TRACE_XUI;
+
 	if( mMouseDownCallback )
 	{
 		mMouseDownCallback( this, mCallbackUserData );

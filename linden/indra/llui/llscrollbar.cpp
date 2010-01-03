@@ -166,6 +166,8 @@ void LLScrollbar::setDocPos(S32 pos, BOOL update_thumb)
 		mDocPos = pos;
 		mDocChanged = TRUE;
 
+		LL_TRACE_XUI_DETAIL;
+
 		if( mChangeCallback )
 		{
 			mChangeCallback( mDocPos, this, mCallbackUserData );

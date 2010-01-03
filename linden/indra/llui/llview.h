@@ -417,6 +417,17 @@ public:
 	virtual void initFromXML(LLXMLNodePtr node, LLView* parent);
 	void parseFollowsFlags(LLXMLNodePtr node);
 
+	// set LL_TRACE_XUI_DETAIL to LL_TRACE_XUI to get detailed tracing
+#define LL_TRACE_XUI traceXUI(__FUNCTION__)
+#define LL_TRACE_XUI_DETAIL
+
+	static void setGlobalTraceConsoleCallback( void (*callback)(const std::string&, void*), void* userdata);
+	static void* getGlobalTraceConsoleUserdata();
+	void setTraceConsoleCallback( std::string (*callback)(const std::string&, void*), void* userdata);
+	virtual void setTrace( std::string (*callback)(const std::string&, void*), void* userdata);
+    
+	void traceXUI(const std::string& msg);
+
 	// Some widgets, like close box buttons, don't need to be saved
 	BOOL getSaveToXML() const { return mSaveToXML; }
 	void setSaveToXML(BOOL b) { mSaveToXML = b; }
@@ -663,6 +674,12 @@ private:
 
 	ECursorType mHoverCursor;
 
+	static void (*sTraceConsoleCallback)(const std::string& msg, void* userdata);
+	static void* sTraceConsoleUserdata;
+
+	std::string (*mTraceConsoleCallback)(const std::string& msg, void* userdata);
+	void* mTraceConsoleUserdata;
+
 public:
 	static BOOL	sDebugRects;	// Draw debug rects behind everything.
 	static BOOL sDebugKeys;
@@ -675,6 +692,7 @@ public:
 	static S32 sLastLeftXML;
 	static S32 sLastBottomXML;
 	static BOOL sForceReshape;
+	static BOOL sTraceLog;
 };
 
 class LLCompareByTabOrder

@@ -1305,6 +1305,8 @@ BOOL LLTextEditor::handleHover(S32 x, S32 y, MASK mask)
 		}
 	}
 
+	LL_TRACE_XUI_DETAIL;
+
 	if (mOnScrollEndCallback && mOnScrollEndData && (mScrollbar->getDocPos() == mScrollbar->getDocPosMax()))
 	{
 		mOnScrollEndCallback(mOnScrollEndData);
@@ -1836,6 +1838,8 @@ BOOL LLTextEditor::handleNavigationKey(const KEY key, const MASK mask)
 		}
 	}
 	
+	LL_TRACE_XUI;
+
 	if (mOnScrollEndCallback && mOnScrollEndData && (mScrollbar->getDocPos() == mScrollbar->getDocPosMax()))
 	{
 		mOnScrollEndCallback(mOnScrollEndData);
@@ -3323,6 +3327,8 @@ void LLTextEditor::changePage( S32 delta )
 	// put desired position into remember-buffer after setCursorPos()
 	mDesiredXPixel = desired_x_pixel;
 
+	LL_TRACE_XUI;
+
 	if (mOnScrollEndCallback && mOnScrollEndData && (mScrollbar->getDocPos() == mScrollbar->getDocPosMax()))
 	{
 		mOnScrollEndCallback(mOnScrollEndData);
@@ -3481,6 +3487,9 @@ void LLTextEditor::endOfDoc()
 	{
 		setCursorPos(len);
 	}
+
+	LL_TRACE_XUI_DETAIL;
+
 	if (mOnScrollEndCallback && mOnScrollEndData && (mScrollbar->getDocPos() == mScrollbar->getDocPosMax()))
 	{
 		mOnScrollEndCallback(mOnScrollEndData);
@@ -3525,6 +3534,9 @@ void LLTextEditor::updateScrollFromCursor()
 	}
 
 	// Check if we've scrolled to bottom for callback if asked for callback
+
+	LL_TRACE_XUI;
+
 	if (mOnScrollEndCallback && mOnScrollEndData && (mScrollbar->getDocPos() == mScrollbar->getDocPosMax()))
 	{
 		mOnScrollEndCallback(mOnScrollEndData);
@@ -4066,6 +4078,9 @@ BOOL LLTextEditor::handleMouseUpOverSegment(S32 x, S32 y, MASK mask)
 		if (mParseHTML && mHTML.length() > 0)
 		{
 				//Special handling for slurls
+
+			LL_TRACE_XUI;
+
 			if ( (mSecondlifeURLcallback!=NULL) && !(*mSecondlifeURLcallback)(mHTML) )
 			{
 				if (mURLcallback!=NULL) (*mURLcallback)(mHTML);

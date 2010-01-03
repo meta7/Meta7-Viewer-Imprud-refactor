@@ -399,6 +399,21 @@ void LLPanel::setBorderVisible(BOOL b)
 	}
 }
 
+
+// virtual
+void LLPanel::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	LLUICtrl::setTrace(callback, userdata);
+
+	LLView::child_list_const_reverse_iter_t rit;
+	for (rit = getChildList()->rbegin(); rit != getChildList()->rend(); ++rit)
+	{
+		LLView* childp = *rit;
+
+		childp->setTrace(callback, userdata);			
+	}
+}
+
 // virtual
 LLXMLNodePtr LLPanel::getXML(bool save_children) const
 {
@@ -1177,6 +1192,19 @@ void LLLayoutStack::removeCtrl(LLUICtrl* ctrl)
 	calcMinExtents();
 
 	LLView::removeCtrl(ctrl);
+}
+
+void LLLayoutStack::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	LLView::setTrace(callback, userdata);
+	
+	LLView::child_list_const_reverse_iter_t rit;
+	for (rit = getChildList()->rbegin(); rit != getChildList()->rend(); ++rit)
+	{
+		LLView* childp = *rit;
+
+		childp->setTrace(callback, userdata);			
+	}
 }
 
 LLXMLNodePtr LLLayoutStack::getXML(bool save_children) const

@@ -874,6 +874,8 @@ void LLMenuItemCallGL::doIt( void )
 	// RN: menu item can be deleted in callback, so beware
 	getMenu()->setItemLastSelected( this );
 
+	LL_TRACE_XUI;
+
 	if( mCallback )
 	{
 		mCallback( mUserData );
@@ -887,6 +889,9 @@ void LLMenuItemCallGL::buildDrawLabel( void )
 {
 	LLPointer<LLEvent> fired_event = new LLEvent(this);
 	fireEvent(fired_event, "on_build");
+
+	LL_TRACE_XUI_DETAIL;
+
 	if( mEnabledCallback )
 	{
 		setEnabled( mEnabledCallback( mUserData ) );
@@ -906,6 +911,9 @@ BOOL LLMenuItemCallGL::handleAcceleratorKey( KEY key, MASK mask )
 	{
 		LLPointer<LLEvent> fired_event = new LLEvent(this);
 		fireEvent(fired_event, "on_build");
+
+		LL_TRACE_XUI;
+
 		if( mEnabledCallback )
 		{
 			setEnabled( mEnabledCallback( mUserData ) );
@@ -1128,6 +1136,20 @@ BOOL LLMenuItemBranchGL::handleAcceleratorKey(KEY key, MASK mask)
 		return getBranch()->handleAcceleratorKey(key, mask);
 	}
 	return FALSE;
+}
+
+
+// virtual
+void LLMenuItemBranchGL::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	if (getBranch())
+	{
+		getBranch()->setTrace(callback, userdata);
+	}
+	else
+	{
+		LLMenuItemGL::setTrace(callback, userdata);
+	}
 }
 
 // virtual
@@ -1757,6 +1779,21 @@ void LLMenuGL::setCanTearOff(BOOL tear_off, LLHandle<LLFloater> parent_floater_h
 		delete mTearOffItem;
 		mTearOffItem = NULL;
 		arrange();
+	}
+}
+
+// virtual
+void LLMenuGL::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	LLView::setTrace(callback, userdata);
+
+	item_list_t::const_iterator item_iter;
+	for (item_iter = mItems.begin(); item_iter != mItems.end(); ++item_iter)
+	{
+		LLView* child = (*item_iter);
+		LLMenuItemGL* item = (LLMenuItemGL*)child;
+
+		item->setTrace(callback, userdata);
 	}
 }
 
@@ -3084,6 +3121,8 @@ public:
 
 	virtual LLXMLNodePtr getXML(bool save_children = true) const;
 
+	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
+
 	// called to rebuild the draw label
 	virtual void buildDrawLabel( void );
 
@@ -3104,6 +3143,18 @@ LLPieMenuBranch::LLPieMenuBranch(const std::string& name,
 {
 	mBranch->hide(FALSE);
 	mBranch->setParentMenuItem(this);
+}
+
+void LLPieMenuBranch::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	if (mBranch)
+	{
+		mBranch->setTrace(callback, userdata);
+	}
+	else
+	{
+		LLMenuItemGL::setTrace(callback, userdata);
+	}
 }
 
 // virtual

@@ -410,6 +410,8 @@ public:
 	LLMenuGL( const std::string& label, LLHandle<LLFloater> parent_floater = LLHandle<LLFloater>() );
 	virtual ~LLMenuGL( void );
 	virtual LLXMLNodePtr getXML(bool save_children = true) const;
+
+	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
 	static LLView* fromXML(LLXMLNodePtr node, LLView *parent, LLUICtrlFactory *factory);
 
 	void parseChildXML(LLXMLNodePtr child, LLView *parent, LLUICtrlFactory *factory);
@@ -576,6 +578,8 @@ public:
 	virtual ~LLMenuItemBranchGL();
 
 	virtual LLXMLNodePtr getXML(bool save_children = true) const;
+
+	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
 
 	virtual std::string getType() const { return "menu"; }
 

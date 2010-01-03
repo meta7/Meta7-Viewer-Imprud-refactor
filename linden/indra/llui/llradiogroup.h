@@ -89,6 +89,7 @@ public:
 
 	virtual void setEnabled(BOOL enabled);
 	virtual LLXMLNodePtr getXML(bool save_children = true) const;
+	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
 	static LLView* fromXML(LLXMLNodePtr node, LLView *parent, LLUICtrlFactory *factory);
 	void setIndexEnabled(S32 index, BOOL enabled);
 	

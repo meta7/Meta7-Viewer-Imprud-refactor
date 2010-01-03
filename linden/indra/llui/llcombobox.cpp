@@ -963,6 +963,8 @@ void LLComboBox::updateSelection()
 	// callback to populate content
 	if( mTextEntry->getWText().size() == 1 )
 	{
+		LL_TRACE_XUI;
+
 		if (mPrearrangeCallback)
 		{
 			mPrearrangeCallback( this, mCallbackUserData );

@@ -129,6 +129,9 @@ LLUICtrl::~LLUICtrl()
 
 void LLUICtrl::onCommit()
 {
+
+	LL_TRACE_XUI;
+
 	if( mCommitCallback )
 	{
 		mCommitCallback( this, mCallbackUserData );
@@ -250,6 +253,9 @@ void LLUICtrl::onFocusLost()
 
 void LLUICtrl::onLostTop()
 {
+
+	LL_TRACE_XUI;
+
 	if (mLostTopCallback)
 	{
 		mLostTopCallback(this, mCallbackUserData);

@@ -1054,6 +1054,8 @@ void LLLineEditor::pasteHelper(bool is_primary)
 			else
 			if( mKeystrokeCallback )
 			{
+				LL_TRACE_XUI;
+
 				mKeystrokeCallback( this, mCallbackUserData );
 			}
 		}
@@ -1365,6 +1367,8 @@ BOOL LLLineEditor::handleKeyHere(KEY key, MASK mask )
 			// Notify owner if requested
 			if (!need_to_rollback && handled)
 			{
+				LL_TRACE_XUI;
+
 				if (mKeystrokeCallback)
 				{
 					mKeystrokeCallback(this, mCallbackUserData);
@@ -1413,6 +1417,8 @@ BOOL LLLineEditor::handleUnicodeCharHere(llwchar uni_char)
 		// Notify owner if requested
 		if( !need_to_rollback && handled )
 		{
+			LL_TRACE_XUI;
+
 			if( mKeystrokeCallback )
 			{
 				// HACK! The only usage of this callback doesn't do anything with the character.
@@ -1456,6 +1462,8 @@ void LLLineEditor::doDelete()
 		}
 		else
 		{
+			LL_TRACE_XUI;
+
 			if( mKeystrokeCallback )
 			{
 				mKeystrokeCallback( this, mCallbackUserData );
@@ -2536,6 +2544,9 @@ void LLLineEditor::updatePreedit(const LLWString &preedit_string,
 
 	// Update of the preedit should be caused by some key strokes.
 	mKeystrokeTimer.reset();
+
+	LL_TRACE_XUI;
+
 	if( mKeystrokeCallback )
 	{
 		mKeystrokeCallback( this, mCallbackUserData );

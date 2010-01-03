@@ -69,6 +69,10 @@ BOOL	LLView::sForceReshape = FALSE;
 LLView*	LLView::sEditingUIView = NULL;
 S32		LLView::sLastLeftXML = S32_MIN;
 S32		LLView::sLastBottomXML = S32_MIN;
+BOOL	LLView::sTraceLog = FALSE;
+
+void	(*LLView::sTraceConsoleCallback)(const std::string&, void*) = NULL;
+void*	LLView::sTraceConsoleUserdata = NULL;
 
 #if LL_DEBUG
 BOOL LLView::sIsDrawing = FALSE;
@@ -87,7 +91,9 @@ LLView::LLView() :
 	mUseBoundingRect(FALSE),
 	mVisible(TRUE),
 	mNextInsertionOrdinal(0),
-	mHoverCursor(UI_CURSOR_ARROW)
+	mHoverCursor(UI_CURSOR_ARROW),
+	mTraceConsoleCallback(NULL),
+	mTraceConsoleUserdata(NULL)
 {
 }
 
@@ -105,7 +111,9 @@ LLView::LLView(const std::string& name, BOOL mouse_opaque) :
 	mUseBoundingRect(FALSE),
 	mVisible(TRUE),
 	mNextInsertionOrdinal(0),
-	mHoverCursor(UI_CURSOR_ARROW)
+	mHoverCursor(UI_CURSOR_ARROW),
+	mTraceConsoleCallback(NULL),
+	mTraceConsoleUserdata(NULL)
 {
 }
 
@@ -127,7 +135,9 @@ LLView::LLView(
 	mUseBoundingRect(FALSE),
 	mVisible(TRUE),
 	mNextInsertionOrdinal(0),
-	mHoverCursor(UI_CURSOR_ARROW)
+	mHoverCursor(UI_CURSOR_ARROW),
+	mTraceConsoleCallback(NULL),
+	mTraceConsoleUserdata(NULL)
 {
 }
 
@@ -2686,6 +2696,27 @@ void LLView::parseFollowsFlags(LLXMLNodePtr node)
 	}
 }
 
+
+void LLView::traceXUI(const std::string& msg)
+{
+	std::string message = msg + " " + getName();
+
+	if (mTraceConsoleCallback)
+	{
+		message = (*mTraceConsoleCallback)(message, mTraceConsoleUserdata);
+	}
+
+	if (sTraceConsoleCallback)
+	{
+		(*sTraceConsoleCallback)(message, sTraceConsoleUserdata);
+	}
+
+	if (LLView::sTraceLog)
+	{
+		LL_INFOS("TraceXUI") << message << LL_ENDL;
+	}
+}
+
 // static
 LLFontGL* LLView::selectFont(LLXMLNodePtr node)
 {
@@ -2870,6 +2901,31 @@ void	LLView::setValue(const LLSD& value)
 LLSD	LLView::getValue() const 
 {
 	return LLSD();
+}
+
+// static
+void LLView::setGlobalTraceConsoleCallback (void (*callback)(const std::string&, void*), void* userdata)
+{
+	sTraceConsoleCallback = callback;
+	sTraceConsoleUserdata = userdata;
+}
+
+// static
+void* LLView::getGlobalTraceConsoleUserdata()
+{
+	return sTraceConsoleUserdata;
+}
+
+void LLView::setTraceConsoleCallback (std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	mTraceConsoleCallback = callback;
+	mTraceConsoleUserdata = userdata;
+}
+
+//virtual
+void LLView::setTrace( std::string (*callback)(const std::string&, void*), void* userdata)
+{
+	setTraceConsoleCallback(callback, userdata);
 }
 
 LLView* LLView::createWidget(LLXMLNodePtr xml_node) const

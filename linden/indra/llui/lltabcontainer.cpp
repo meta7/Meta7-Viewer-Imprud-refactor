@@ -1161,6 +1161,9 @@ BOOL LLTabContainer::selectTab(S32 which)
 	}
 
 	mNextTabIdx = which;
+
+	LL_TRACE_XUI;
+
 	selected_tuple->mPrecommitChangeCallback(selected_tuple->mUserData, false);
 	return TRUE;
 }
@@ -1249,6 +1252,9 @@ BOOL LLTabContainer::setTab(S32 which)
 			}
 			i++;
 		}
+
+		LL_TRACE_XUI;
+
 		if( selected_tuple->mOnChangeCallback )
 		{
 			selected_tuple->mOnChangeCallback( selected_tuple->mUserData, false );
