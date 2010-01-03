@@ -422,6 +422,8 @@ void LLMultiSliderCtrl::onCommit()
 		mEditor->setTentative(FALSE);
 	}
 
+	LL_TRACE_XUI;
+
 	LLUICtrl::onCommit();
 }
 
@@ -448,6 +450,9 @@ void LLMultiSliderCtrl::setSliderMouseDownCallback( void (*slider_mousedown_call
 void LLMultiSliderCtrl::onSliderMouseDown(LLUICtrl* caller, void* userdata)
 {
 	LLMultiSliderCtrl* self = (LLMultiSliderCtrl*) userdata;
+
+	self->LL_TRACE_XUI;
+
 	if( self->mSliderMouseDownCallback )
 	{
 		self->mSliderMouseDownCallback( self, self->mCallbackUserData );
@@ -465,6 +470,9 @@ void LLMultiSliderCtrl::setSliderMouseUpCallback( void (*slider_mouseup_callback
 void LLMultiSliderCtrl::onSliderMouseUp(LLUICtrl* caller, void* userdata)
 {
 	LLMultiSliderCtrl* self = (LLMultiSliderCtrl*) userdata;
+
+	self->LL_TRACE_XUI;
+
 	if( self->mSliderMouseUpCallback )
 	{
 		self->mSliderMouseUpCallback( self, self->mCallbackUserData );

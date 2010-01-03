@@ -374,6 +374,9 @@ void LLSpinCtrl::onCommit()
 {
 	setTentative(FALSE);
 	setControlValue(mValue);
+
+	LL_TRACE_XUI;
+
 	LLUICtrl::onCommit();
 }
 

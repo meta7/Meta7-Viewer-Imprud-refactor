@@ -2538,6 +2538,8 @@ void LLTextEditor::onFocusLost()
 
 	if (mCommitOnFocusLost)
 	{
+		LL_TRACE_XUI;
+
 		onCommit();
 	}
 

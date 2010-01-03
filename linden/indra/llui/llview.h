@@ -236,6 +236,18 @@ public:
 		SNAP_BOTTOM
 	};
 
+	struct trace_info
+	{
+		trace_info() : mFunction(NULL), mName (NULL), mAction(NULL),
+					   mResult(NULL), mChannel(NULL) {}
+
+		const std::string* mFunction;
+		const std::string* mName;
+		const std::string* mAction;
+		const std::string* mResult;
+		const std::string* mChannel;
+	};
+
 	typedef std::list<LLView*> child_list_t;
 	typedef child_list_t::iterator					child_list_iter_t;
 	typedef child_list_t::const_iterator  			child_list_const_iter_t;
@@ -418,15 +430,15 @@ public:
 	void parseFollowsFlags(LLXMLNodePtr node);
 
 	// set LL_TRACE_XUI_DETAIL to LL_TRACE_XUI to get detailed tracing
-#define LL_TRACE_XUI traceXUI(__FUNCTION__)
+#define LL_TRACE_XUI traceXUI(__FUNCTION__, "action", NULL)
 #define LL_TRACE_XUI_DETAIL
 
-	static void setGlobalTraceConsoleCallback( void (*callback)(const std::string&, void*), void* userdata);
+	static void setGlobalTraceConsoleCallback( void (*callback)(trace_info&, void*), void* userdata);
 	static void* getGlobalTraceConsoleUserdata();
-	void setTraceConsoleCallback( std::string (*callback)(const std::string&, void*), void* userdata);
-	virtual void setTrace( std::string (*callback)(const std::string&, void*), void* userdata);
+	void setTraceConsoleCallback( std::string (*callback)(trace_info&, void*), void* userdata);
+	virtual void setTrace( std::string (*callback)(trace_info&, void*), void* userdata);
     
-	void traceXUI(const std::string& msg);
+	void traceXUI(const std::string& function, const std::string& action, const std::string* result);
 
 	// Some widgets, like close box buttons, don't need to be saved
 	BOOL getSaveToXML() const { return mSaveToXML; }
@@ -674,10 +686,10 @@ private:
 
 	ECursorType mHoverCursor;
 
-	static void (*sTraceConsoleCallback)(const std::string& msg, void* userdata);
+	static void (*sTraceConsoleCallback)(trace_info& info, void* userdata);
 	static void* sTraceConsoleUserdata;
 
-	std::string (*mTraceConsoleCallback)(const std::string& msg, void* userdata);
+	std::string (*mTraceConsoleCallback)(trace_info& info, void* userdata);
 	void* mTraceConsoleUserdata;
 
 public:

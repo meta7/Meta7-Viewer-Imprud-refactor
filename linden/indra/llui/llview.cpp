@@ -71,7 +71,7 @@ S32		LLView::sLastLeftXML = S32_MIN;
 S32		LLView::sLastBottomXML = S32_MIN;
 BOOL	LLView::sTraceLog = FALSE;
 
-void	(*LLView::sTraceConsoleCallback)(const std::string&, void*) = NULL;
+void	(*LLView::sTraceConsoleCallback)(trace_info&, void*) = NULL;
 void*	LLView::sTraceConsoleUserdata = NULL;
 
 #if LL_DEBUG
@@ -2697,22 +2697,45 @@ void LLView::parseFollowsFlags(LLXMLNodePtr node)
 }
 
 
-void LLView::traceXUI(const std::string& msg)
+void LLView::traceXUI(const std::string& function, const std::string& action, const std::string* result)
 {
-	std::string message = msg + " " + getName();
+	trace_info info;
+
+	info.mFunction = &function;
+	info.mName     = &getName();
+	info.mAction   = &action;
+	info.mResult   = result;
+	info.mChannel  = NULL;
+
+	std::string channel;
 
 	if (mTraceConsoleCallback)
 	{
-		message = (*mTraceConsoleCallback)(message, mTraceConsoleUserdata);
+		channel = (*mTraceConsoleCallback)(info, mTraceConsoleUserdata);
+		info.mChannel = &channel;
 	}
 
 	if (sTraceConsoleCallback)
 	{
-		(*sTraceConsoleCallback)(message, sTraceConsoleUserdata);
+		(*sTraceConsoleCallback)(info, sTraceConsoleUserdata);
 	}
 
 	if (LLView::sTraceLog)
 	{
+		std::string message = function;
+	
+		if (info.mChannel && info.mChannel->length() > 0)
+		{
+			message += " /" + (*info.mChannel);
+		}
+	
+		message += " \"" + getName() + "\" " + action;
+
+		if (result)
+		{
+			message += " " + (*result);
+		}
+
 		LL_INFOS("TraceXUI") << message << LL_ENDL;
 	}
 }
@@ -2904,7 +2927,7 @@ LLSD	LLView::getValue() const
 }
 
 // static
-void LLView::setGlobalTraceConsoleCallback (void (*callback)(const std::string&, void*), void* userdata)
+void LLView::setGlobalTraceConsoleCallback (void (*callback)(trace_info&, void*), void* userdata)
 {
 	sTraceConsoleCallback = callback;
 	sTraceConsoleUserdata = userdata;
@@ -2916,14 +2939,14 @@ void* LLView::getGlobalTraceConsoleUserdata()
 	return sTraceConsoleUserdata;
 }
 
-void LLView::setTraceConsoleCallback (std::string (*callback)(const std::string&, void*), void* userdata)
+void LLView::setTraceConsoleCallback (std::string (*callback)(trace_info&, void*), void* userdata)
 {
 	mTraceConsoleCallback = callback;
 	mTraceConsoleUserdata = userdata;
 }
 
 //virtual
-void LLView::setTrace( std::string (*callback)(const std::string&, void*), void* userdata)
+void LLView::setTrace( std::string (*callback)(trace_info&, void*), void* userdata)
 {
 	setTraceConsoleCallback(callback, userdata);
 }

@@ -677,7 +677,7 @@ S32 LLScrollableContainerView::getBorderWidth() const
 }
 
 // virtual
-void LLScrollableContainerView::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLScrollableContainerView::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	LLUICtrl::setTrace(callback, userdata);
 

@@ -131,6 +131,8 @@ void LLSlider::setValueAndCommit(F32 value)
 
 	if (mValue != old_value)
 	{
+		LL_TRACE_XUI;
+
 		onCommit();
 	}
 }

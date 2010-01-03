@@ -179,6 +179,9 @@ void LLCheckBoxCtrl::onCommit()
 	if( getEnabled() )
 	{
 		setTentative(FALSE);
+
+		LL_TRACE_XUI;
+
 		LLUICtrl::onCommit();
 	}
 }

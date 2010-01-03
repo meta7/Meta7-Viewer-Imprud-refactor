@@ -46,16 +46,16 @@ public:
 	virtual BOOL postBuild();
 	virtual void onClose(bool app_quitting);
 
-	static std::string cbAddTrace(const std::string& msg, void* userdata);
-	void addTrace(const std::string& msg);
+	static std::string cbAddTrace(LLView::trace_info& info, void* userdata);
+	void addTrace(LLView::trace_info& info);
 
-	void setTrace( std::string (*callback)(const std::string&, void*), void* userdata);
+	void setTrace( std::string (*callback)(LLView::trace_info&, void*), void* userdata);
 
 	BOOL setChatChannel(std::string channel);
 	
 private:
 	void* mTracingFloater;
-	std::string (*mTracingCallback)(const std::string& msg, void* userdata);
+	std::string (*mTracingCallback)(LLView::trace_info& msg, void* userdata);
 	std::string mChatChannel;
 	BOOL mSendToChat;
 };

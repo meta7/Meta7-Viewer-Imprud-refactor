@@ -310,6 +310,9 @@ BOOL LLMultiSlider::handleHover(S32 x, S32 y, MASK mask)
 
 		F32 t = F32(x - left_edge) / (right_edge - left_edge);
 		setCurSliderValue(t * (mMaxValue - mMinValue) + mMinValue );
+
+		LL_TRACE_XUI;
+
 		onCommit();
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
@@ -413,11 +416,17 @@ BOOL	LLMultiSlider::handleKeyHere(KEY key, MASK mask)
 		break;
 	case KEY_LEFT:
 		setCurSliderValue(getCurSliderValue() - getIncrement());
+
+		LL_TRACE_XUI;
+
 		onCommit();
 		handled = TRUE;
 		break;
 	case KEY_RIGHT:
 		setCurSliderValue(getCurSliderValue() + getIncrement());
+
+		LL_TRACE_XUI;
+
 		onCommit();
 		handled = TRUE;
 		break;

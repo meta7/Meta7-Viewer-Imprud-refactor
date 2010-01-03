@@ -81,33 +81,93 @@ BOOL LLFloaterProxy::setChatChannel(std::string channel)
 }
 
 // static
-std::string LLFloaterProxy::cbAddTrace(const std::string& msg, void* userdata)
+std::string LLFloaterProxy::cbAddTrace(LLView::trace_info& info, void* userdata)
 {
 	LLFloaterProxy* self = (LLFloaterProxy*)userdata;
-	self->addTrace(msg);
-
-	std::string message = msg;
+	self->addTrace(info);
 
 	if(self->mSendToChat)
 	{
-		message = "/" + self->mChatChannel + " " + msg;
+		std::string message = LLURI::escape(*info.mName) + " " + (*info.mAction);
+
+		if (info.mResult)
+		{
+			int header_length = message.length();
+			int result_length = info.mResult->length();
+
+			if (header_length + result_length < MAX_MSG_STR_LEN)
+			{
+				message += " " + (*info.mResult);
+			}
+			else
+			{
+				// Handle long results here.  The extra 14 is for the action
+				// modifier, the sequence number, and two spaces.
+				int block_length = MAX_MSG_STR_LEN - (header_length + 14);
+
+				// If the header alone is too long, just let it be truncated and
+				// ignore the result.  We don't want to send too many messages.
+				if (block_length < 100)
+				{
+					// Modify the action name so the receiver knows.
+					// It might get truncated, but we do our best.
+					message += "_toolong";
+				}
+				else
+				{
+					// Modify the action name so the receiver knows.
+					message += "_long";
+
+					int sections = result_length / block_length;
+					int last_section = result_length - (sections * block_length);
+					if (last_section == 0)
+					{
+						last_section = block_length;
+						sections--;
+					}
+
+					// Send all but the last section
+					int start = 0;
+					for ( ; sections > 0; sections-- )
+					{
+						std::ostringstream remaining;
+						remaining << sections;
+						std::string partial = remaining.str() + " " + info.mResult->substr(start, block_length);
+						std::string section = "/" + self->mChatChannel + " " + message + " " + partial; 
+
+						gChatBar->sendChatFromViewer(section, CHAT_TYPE_NORMAL, FALSE);
+
+						start += block_length;
+					}
+
+					message += " 0 " + info.mResult->substr(start, last_section);
+				}
+			}
+		}
+
+		message = utf8str_truncate (message, MAX_MSG_STR_LEN);
+		message = "/" + self->mChatChannel + " " + message;
 
 		gChatBar->sendChatFromViewer(message, CHAT_TYPE_NORMAL, FALSE);
-	}
 
-	return message;
+		return self->mChatChannel;
+	}
+	else
+	{
+		return "";
+	}
 }
 
-void LLFloaterProxy::addTrace(const std::string& msg)
+void LLFloaterProxy::addTrace(LLView::trace_info& info)
 {
 	if(mTracingFloater)
 	{
-		// ignoring the return string because it did not change
-		(*mTracingCallback)(msg, mTracingFloater);
+		// ignoring the return string because it's empty
+		(*mTracingCallback)(info, mTracingFloater);
 	}
 }
 
-void LLFloaterProxy::setTrace( std::string (*callback)(const std::string&, void*), void* userdata)
+void LLFloaterProxy::setTrace( std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	if(mTracingFloater)
 	{

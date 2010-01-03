@@ -38,6 +38,7 @@
 #include "llstring.h"
 #include "llviewertexteditor.h"
 #include "lluictrlfactory.h"
+#include "llviewercontrol.h"
 
 //
 // Member Functions
@@ -123,17 +124,17 @@ void LLFloaterXUIPreview::onClickSend(void* userdata)
 }
 
 // static
-std::string LLFloaterXUIPreview::cbAddTrace(const std::string& msg, void* userdata)
+std::string LLFloaterXUIPreview::cbAddTrace(LLView::trace_info& info, void* userdata)
 {
 	LLFloaterXUIPreview* self = (LLFloaterXUIPreview*)userdata;
-	self->addTrace(msg);
+	self->addTrace(info);
 
-	return msg;
+	return "";
 }
 
-void LLFloaterXUIPreview::addTrace(const std::string& msg)
+void LLFloaterXUIPreview::addTrace(LLView::trace_info& info)
 {
-	LLColor4 color = LLColor4::red;
+	LLColor4 color = gColors.getColor( "TextTraceColor" );
 
 	LLViewerTextEditor*	trace_editor = getChild<LLViewerTextEditor>("XUI preview display");
 
@@ -141,7 +142,22 @@ void LLFloaterXUIPreview::addTrace(const std::string& msg)
 	trace_editor->setParseHighlights(TRUE);
 
 	trace_editor->appendTime(true);
-	trace_editor->appendColoredText(msg, false, false, color);
+	
+	std::string message = *info.mFunction;
+	
+	if (info.mChannel && info.mChannel->length() > 0)
+	{
+		message += " /" + (*info.mChannel);
+	}
+	
+	message += " \"" + (*info.mName) + "\" " + (*info.mAction);
+
+	if (info.mResult)
+	{
+		message += " " + (*info.mResult);
+	}
+
+	trace_editor->appendColoredText(message, false, false, color);
 }
 
 void LLFloaterXUIPreview::setTracedFloater(LLFloaterProxy* traced_floater, std::string filename)

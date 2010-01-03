@@ -130,7 +130,7 @@ LLUICtrl::~LLUICtrl()
 void LLUICtrl::onCommit()
 {
 
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if( mCommitCallback )
 	{
@@ -253,8 +253,7 @@ void LLUICtrl::onFocusLost()
 
 void LLUICtrl::onLostTop()
 {
-
-	LL_TRACE_XUI;
+	LL_TRACE_XUI_DETAIL;
 
 	if (mLostTopCallback)
 	{

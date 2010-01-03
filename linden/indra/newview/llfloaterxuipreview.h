@@ -48,8 +48,8 @@ public:
 	virtual BOOL postBuild();
 	virtual void onClose(bool app_quitting);
 
-	static std::string cbAddTrace(const std::string& msg, void* userdata);
-	void addTrace(const std::string& msg);
+	static std::string cbAddTrace(LLView::trace_info& info, void* userdata);
+	void addTrace(LLView::trace_info& info);
 
 	void setTracedFloater(LLFloaterProxy* traced_floater, std::string filename = "");
 

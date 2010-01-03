@@ -293,6 +293,8 @@ void LLColorSwatchCtrl::onColorChanged ( void* data, EColorPickOp pick_op )
 			subject->mColor = updatedColor;
 			subject->setControlValue(updatedColor.getValue());
 
+			subject->LL_TRACE_XUI;
+
 			if (pick_op == COLOR_CANCEL && subject->mOnCancelCallback)
 			{
 				subject->mOnCancelCallback(subject, subject->mCallbackUserData);

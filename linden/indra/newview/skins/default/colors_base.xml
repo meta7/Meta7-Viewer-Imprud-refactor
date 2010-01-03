@@ -70,6 +70,7 @@
 <TextDefaultColor value="0, 20, 0, 255"/>                   <!-- Non-keyword text in the script editor -->
 <TextLinkColor value="144, 165, 208, 255"/>
 <TextLinkHoverColor value="255, 255, 255, 255"/>
+<TextTraceColor value="255, 0, 0, 255"/>
   
 <!-- LISTBOXES -->
 <ScrollBgReadOnlyColor value="200, 209, 204, 255" />    <!-- Background of read only lists -->

@@ -1288,7 +1288,10 @@ BOOL LLTextureCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask,
 			{
 				// This removes the 'Multiple' overlay, since
 				// there is now only one texture selected.
-				setTentative( FALSE ); 
+				setTentative( FALSE );
+
+				LL_TRACE_XUI;
+
 				onCommit();
 			}
 		}

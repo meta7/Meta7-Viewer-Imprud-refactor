@@ -1426,6 +1426,8 @@ void LLScrollListCtrl::selectNextItem( BOOL extend_selection)
 
 	if (mCommitOnKeyboardMovement)
 	{
+		LL_TRACE_XUI;
+
 		onCommit();
 	}
 
@@ -2038,6 +2040,9 @@ BOOL LLScrollListCtrl::handleMouseUp(S32 x, S32 y, MASK mask)
 	{
 		mDirty |= mSelectionChanged;
 		mSelectionChanged = FALSE;
+
+		LL_TRACE_XUI;
+
 		onCommit();
 	}
 
@@ -2102,6 +2107,9 @@ BOOL LLScrollListCtrl::handleClick(S32 x, S32 y, MASK mask)
 					cellp->onCommit();
 				}
 			}
+
+			LL_TRACE_XUI;
+
 			//FIXME: find a better way to signal cell changes
 			onCommit();
 		}
@@ -2281,6 +2289,8 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						LL_TRACE_XUI;
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2294,6 +2304,8 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						LL_TRACE_XUI;
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2307,6 +2319,8 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						LL_TRACE_XUI;
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2320,6 +2334,8 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						LL_TRACE_XUI;
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2331,6 +2347,8 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 				// type. AND we are visible
 			  	if (!mCommitOnKeyboardMovement && mask == MASK_NONE)
 				{
+					LL_TRACE_XUI;
+
 					onCommit();
 					mSearchString.clear();
 					handled = TRUE;
@@ -2362,6 +2380,8 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						LL_TRACE_XUI;
+
 						onCommit();
 					}
 				}
@@ -2402,6 +2422,8 @@ BOOL LLScrollListCtrl::handleUnicodeCharHere(llwchar uni_char)
 		if (mCommitOnKeyboardMovement
 			&& !mCommitOnSelectionChange) 
 		{
+			LL_TRACE_XUI;
+
 			onCommit();
 		}
 	}
@@ -2448,6 +2470,8 @@ BOOL LLScrollListCtrl::handleUnicodeCharHere(llwchar uni_char)
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						LL_TRACE_XUI;
+
 						onCommit();
 					}
 
@@ -2541,6 +2565,8 @@ void LLScrollListCtrl::commitIfChanged()
 {
 	if (mSelectionChanged)
 	{
+		LL_TRACE_XUI;
+
 		mDirty = TRUE;
 		mSelectionChanged = FALSE;
 		onCommit();

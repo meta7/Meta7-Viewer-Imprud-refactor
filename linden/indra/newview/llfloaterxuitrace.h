@@ -46,8 +46,8 @@ public:
 	virtual BOOL postBuild();
 	virtual void onClose(bool app_quitting);
 
-	static void cbAddTrace(const std::string& msg, void* userdata);
-	void addTrace(const std::string& msg);
+	static void cbAddTrace(LLView::trace_info& info, void* userdata);
+	void addTrace(LLView::trace_info& info);
 
 	void setTraceCursorAndScrollToEnd();
 

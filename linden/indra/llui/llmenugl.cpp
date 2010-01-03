@@ -1140,7 +1140,7 @@ BOOL LLMenuItemBranchGL::handleAcceleratorKey(KEY key, MASK mask)
 
 
 // virtual
-void LLMenuItemBranchGL::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLMenuItemBranchGL::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	if (getBranch())
 	{
@@ -1783,7 +1783,7 @@ void LLMenuGL::setCanTearOff(BOOL tear_off, LLHandle<LLFloater> parent_floater_h
 }
 
 // virtual
-void LLMenuGL::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLMenuGL::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	LLView::setTrace(callback, userdata);
 
@@ -3121,7 +3121,7 @@ public:
 
 	virtual LLXMLNodePtr getXML(bool save_children = true) const;
 
-	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
+	virtual void setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata);
 
 	// called to rebuild the draw label
 	virtual void buildDrawLabel( void );
@@ -3145,7 +3145,7 @@ LLPieMenuBranch::LLPieMenuBranch(const std::string& name,
 	mBranch->setParentMenuItem(this);
 }
 
-void LLPieMenuBranch::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLPieMenuBranch::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	if (mBranch)
 	{

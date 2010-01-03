@@ -229,6 +229,8 @@ void LLLineEditor::onCommit()
 	// put current line into the line history
 	updateHistory();
 
+	LL_TRACE_XUI;
+
 	LLUICtrl::onCommit();
 
 	// Selection on commit needs to be turned off when evaluating maths
@@ -2786,6 +2788,9 @@ void LLSearchEditor::draw()
 void LLSearchEditor::onSearchEdit(LLLineEditor* caller, void* user_data )
 {
 	LLSearchEditor* search_editor = (LLSearchEditor*)user_data;
+
+	search_editor->LL_TRACE_XUI;
+
 	if (search_editor->mSearchCallback)
 	{
 		search_editor->mSearchCallback(caller->getText(), search_editor->mCallbackUserData);
@@ -2798,6 +2803,9 @@ void LLSearchEditor::onClearSearch(void* user_data)
 	LLSearchEditor* search_editor = (LLSearchEditor*)user_data;
 
 	search_editor->setText(LLStringUtil::null);
+
+	search_editor->LL_TRACE_XUI;
+
 	if (search_editor->mSearchCallback)
 	{
 		search_editor->mSearchCallback(LLStringUtil::null, search_editor->mCallbackUserData);

@@ -77,7 +77,7 @@ public:
 	/*virtual*/ void	draw();	
 	/*virtual*/ BOOL	handleKeyHere( KEY key, MASK mask );
 
-	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
+	virtual void setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata);
 
 	/*virtual*/ LLXMLNodePtr getXML(bool save_children = true) const;
 	// Override to set not found list:
@@ -275,7 +275,7 @@ public:
 
 	/*virtual*/ void draw();
 
-	virtual void setTrace(std::string (*callback)(const std::string&, void*), void* userdata);
+	virtual void setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata);
 
 	/*virtual*/ LLXMLNodePtr getXML(bool save_children = true) const;
 	/*virtual*/ void removeCtrl(LLUICtrl* ctrl);

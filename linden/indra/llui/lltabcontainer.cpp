@@ -1426,6 +1426,9 @@ void LLTabContainer::onTabBtn( void* userdata )
 void LLTabContainer::onCloseBtn( void* userdata )
 {
 	LLTabContainer* self = (LLTabContainer*) userdata;
+
+	self->LL_TRACE_XUI;
+
 	if( self->mCloseCallback )
 	{
 		self->mCloseCallback( self->mCallbackUserdata );
@@ -1437,6 +1440,9 @@ void LLTabContainer::onNextBtn( void* userdata )
 {
 	// Scroll tabs to the left
 	LLTabContainer* self = (LLTabContainer*) userdata;
+
+	self->LL_TRACE_XUI;
+
 	if (!self->mScrolled)
 	{
 		self->scrollNext();

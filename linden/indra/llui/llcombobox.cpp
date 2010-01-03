@@ -244,6 +244,9 @@ void LLComboBox::onCommit()
 		mTextEntry->setValue(getSimple());
 		mTextEntry->setTentative(FALSE);
 	}
+
+	LL_TRACE_XUI;
+
 	LLUICtrl::onCommit();
 }
 
@@ -706,6 +709,8 @@ void LLComboBox::onButtonDown(void *userdata)
 			self->mList->highlightNthItem(self->mList->getItemIndex(last_selected_item));
 		}
 
+		self->LL_TRACE_XUI;
+
 		if( self->mPrearrangeCallback )
 		{
 			self->mPrearrangeCallback( self, self->mCallbackUserData );
@@ -880,6 +885,8 @@ void LLComboBox::onTextEntry(LLLineEditor* line_editor, void* user_data)
 {
 	LLComboBox* self = (LLComboBox*)user_data;
 
+	self->LL_TRACE_XUI;
+
 	if (self->mTextEntryCallback)
 	{
 		(*self->mTextEntryCallback)(line_editor, self->mCallbackUserData);
@@ -912,6 +919,8 @@ void LLComboBox::onTextEntry(LLLineEditor* line_editor, void* user_data)
 		self->setCurrentByIndex(llmin(self->getItemCount() - 1, self->getCurrentIndex() + 1));
 		if (!self->mList->getVisible())
 		{
+			self->LL_TRACE_XUI;
+
 			if( self->mPrearrangeCallback )
 			{
 				self->mPrearrangeCallback( self, self->mCallbackUserData );
@@ -930,6 +939,8 @@ void LLComboBox::onTextEntry(LLLineEditor* line_editor, void* user_data)
 		self->setCurrentByIndex(llmax(0, self->getCurrentIndex() - 1));
 		if (!self->mList->getVisible())
 		{
+			self->LL_TRACE_XUI;
+
 			if( self->mPrearrangeCallback )
 			{
 				self->mPrearrangeCallback( self, self->mCallbackUserData );

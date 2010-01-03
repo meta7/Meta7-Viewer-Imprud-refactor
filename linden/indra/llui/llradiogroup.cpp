@@ -178,6 +178,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				LL_TRACE_XUI;
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -189,6 +191,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				LL_TRACE_XUI;
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -200,6 +204,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				LL_TRACE_XUI;
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -211,6 +217,8 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				LL_TRACE_XUI;
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -341,7 +349,7 @@ LLSD LLRadioGroup::getValue() const
 }
 
 // virtual
-void LLRadioGroup::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLRadioGroup::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	LLUICtrl::setTrace(callback, userdata);
 

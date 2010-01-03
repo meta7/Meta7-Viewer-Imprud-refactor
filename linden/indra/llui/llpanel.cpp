@@ -401,7 +401,7 @@ void LLPanel::setBorderVisible(BOOL b)
 
 
 // virtual
-void LLPanel::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLPanel::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	LLUICtrl::setTrace(callback, userdata);
 
@@ -1194,7 +1194,7 @@ void LLLayoutStack::removeCtrl(LLUICtrl* ctrl)
 	LLView::removeCtrl(ctrl);
 }
 
-void LLLayoutStack::setTrace(std::string (*callback)(const std::string&, void*), void* userdata)
+void LLLayoutStack::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
 {
 	LLView::setTrace(callback, userdata);
 	
