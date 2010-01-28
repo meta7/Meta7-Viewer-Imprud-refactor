@@ -130,6 +130,55 @@
 	(With help from Admiral Admiral)
 
 
+	* VWR-10924 Magical scripted HUD/UI
+
+	  new file:   linden/indra/newview/llfloaterproxy.cpp
+	  new file:   linden/indra/newview/llfloaterproxy.h
+	  new file:   linden/indra/newview/llfloaterxuipreview.cpp
+	  new file:   linden/indra/newview/llfloaterxuipreview.h
+	  new file:   linden/indra/newview/llfloaterxuitrace.cpp
+	  new file:   linden/indra/newview/llfloaterxuitrace.h
+	  new file:   linden/indra/newview/skins/default/xui/en-us/floater_xui_preview.xml
+	  new file:   linden/indra/newview/skins/default/xui/en-us/floater_xui_trace.xml
+	  modified:   linden/indra/llui/llbutton.cpp
+	  modified:   linden/indra/llui/llcheckboxctrl.cpp
+	  modified:   linden/indra/llui/llcombobox.cpp
+	  modified:   linden/indra/llui/lllineeditor.cpp
+	  modified:   linden/indra/llui/llmenugl.cpp
+	  modified:   linden/indra/llui/llmenugl.h
+	  modified:   linden/indra/llui/llmultislider.cpp
+	  modified:   linden/indra/llui/llmultisliderctrl.cpp
+	  modified:   linden/indra/llui/llpanel.cpp
+	  modified:   linden/indra/llui/llpanel.h
+	  modified:   linden/indra/llui/llradiogroup.cpp
+	  modified:   linden/indra/llui/llradiogroup.h
+	  modified:   linden/indra/llui/llscrollbar.cpp
+	  modified:   linden/indra/llui/llscrollcontainer.cpp
+	  modified:   linden/indra/llui/llscrollcontainer.h
+	  modified:   linden/indra/llui/llscrolllistctrl.cpp
+	  modified:   linden/indra/llui/llslider.cpp
+	  modified:   linden/indra/llui/llsliderctrl.cpp
+	  modified:   linden/indra/llui/llspinctrl.cpp
+	  modified:   linden/indra/llui/lltabcontainer.cpp
+	  modified:   linden/indra/llui/lltextbox.cpp
+	  modified:   linden/indra/llui/lltexteditor.cpp
+	  modified:   linden/indra/llui/lluictrl.cpp
+	  modified:   linden/indra/llui/lluictrlfactory.cpp
+	  modified:   linden/indra/llui/lluictrlfactory.h
+	  modified:   linden/indra/llui/llview.cpp
+	  modified:   linden/indra/llui/llview.h
+	  modified:   linden/indra/newview/llcolorswatch.cpp
+	  modified:   linden/indra/newview/llpreviewnotecard.cpp
+	  modified:   linden/indra/newview/llpreviewnotecard.h
+	  modified:   linden/indra/newview/lltexturectrl.cpp
+	  modified:   linden/indra/newview/llviewermenu.cpp
+	  modified:   linden/indra/newview/llviewertexteditor.cpp
+	  modified:   linden/indra/newview/skins/default/colors_base.xml
+	  modified:   linden/indra/newview/skins/default/xui/en-us/floater_preview_notecard.xml
+	  modified:   linden/indra/newview/skins/default/xui/en-us/floater_preview_notecard_keep_discard.xml
+	  modified:   linden/indra/newview/skins/default/xui/en-us/menu_viewer.xml
+
+
 	* SNOW-413 Potential null pointer exception in multi-slider control
 
 	  modified:   linden/indra/llui/llmultisliderctrl.cpp
