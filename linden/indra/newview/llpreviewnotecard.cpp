@@ -206,7 +206,7 @@ void LLPreviewNotecard::draw()
 	LLViewerTextEditor* editor = getChild<LLViewerTextEditor>("Notecard Editor");
 	BOOL script_changed = !editor->isPristine();
 	
-	LLWString& prefix = editor->getWSubString(0,6);
+	LLWString prefix = editor->getWSubString(0,6);
 	LLWString xml (utf8str_to_wstring(std::string("<?xml ")));
 	BOOL is_xml = LLWStringUtil::compareStrings(prefix, xml) == 0;
 	childSetVisible ("Build Floater", is_xml);

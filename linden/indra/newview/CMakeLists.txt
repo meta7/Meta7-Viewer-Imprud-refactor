@@ -191,6 +191,9 @@ set(viewer_SOURCE_FILES
     llfloaterpostprocess.cpp
     llfloaterpreference.cpp
     llfloaterproperties.cpp
+    llfloaterproxy.cpp
+    llfloaterxuipreview.cpp
+    llfloaterxuitrace.cpp
     llfloaterregioninfo.cpp
     llfloaterreporter.cpp
     llfloaterscriptdebug.cpp
@@ -609,6 +612,9 @@ set(viewer_HEADER_FILES
     llfloaterpreference.h
     llfloaterperms.h
     llfloaterproperties.h
+    llfloaterproxy.h
+    llfloaterxuipreview.h
+    llfloaterxuitrace.h
     llfloaterregioninfo.h
     llfloaterreporter.h
     llfloaterscriptdebug.h
@@ -1178,6 +1184,8 @@ set(viewer_XUI_FILES
     skins/default/xui/en-us/floater_wearable_save_as.xml
     skins/default/xui/en-us/floater_windlight_options.xml
     skins/default/xui/en-us/floater_world_map.xml
+    skins/default/xui/en-us/floater_xui_preview.xml
+    skins/default/xui/en-us/floater_xui_trace.xml
     skins/default/xui/en-us/fonts.xml
     skins/default/xui/en-us/legacy_menu_pie_attachment.xml
 	skins/default/xui/en-us/legacy_menu_pie_avatar.xml
