@@ -677,6 +677,14 @@ S32 LLScrollableContainerView::getBorderWidth() const
 }
 
 // virtual
+void LLScrollableContainerView::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
+{
+	LLUICtrl::setTrace(callback, userdata);
+
+	mScrolledView->setTrace(callback, userdata);
+}
+
+// virtual
 LLXMLNodePtr LLScrollableContainerView::getXML(bool save_children) const
 {
 	LLXMLNodePtr node = LLUICtrl::getXML();

@@ -1426,6 +1426,9 @@ void LLScrollListCtrl::selectNextItem( BOOL extend_selection)
 
 	if (mCommitOnKeyboardMovement)
 	{
+		std::string value = getSelectedValue().asString();
+		traceXUI(__FUNCTION__, "on_commit", &value);
+
 		onCommit();
 	}
 
@@ -2038,6 +2041,10 @@ BOOL LLScrollListCtrl::handleMouseUp(S32 x, S32 y, MASK mask)
 	{
 		mDirty |= mSelectionChanged;
 		mSelectionChanged = FALSE;
+
+		std::string value = getSelectedValue().asString();
+		traceXUI(__FUNCTION__, "on_commit", &value);
+
 		onCommit();
 	}
 
@@ -2102,6 +2109,10 @@ BOOL LLScrollListCtrl::handleClick(S32 x, S32 y, MASK mask)
 					cellp->onCommit();
 				}
 			}
+
+			std::string value = getSelectedValue().asString();
+			traceXUI(__FUNCTION__, "on_commit", &value);
+
 			//FIXME: find a better way to signal cell changes
 			onCommit();
 		}
@@ -2281,6 +2292,9 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						std::string value = getSelectedValue().asString();
+						traceXUI(__FUNCTION__, "on_commit", &value);
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2294,6 +2308,9 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						std::string value = getSelectedValue().asString();
+						traceXUI(__FUNCTION__, "on_commit", &value);
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2307,6 +2324,9 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						std::string value = getSelectedValue().asString();
+						traceXUI(__FUNCTION__, "on_commit", &value);
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2320,6 +2340,9 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						std::string value = getSelectedValue().asString();
+						traceXUI(__FUNCTION__, "on_commit", &value);
+
 						onCommit();
 					}
 					handled = TRUE;
@@ -2331,6 +2354,9 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 				// type. AND we are visible
 			  	if (!mCommitOnKeyboardMovement && mask == MASK_NONE)
 				{
+					std::string value = getSelectedValue().asString();
+					traceXUI(__FUNCTION__, "on_commit", &value);
+
 					onCommit();
 					mSearchString.clear();
 					handled = TRUE;
@@ -2362,6 +2388,9 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						std::string value = getSelectedValue().asString();
+						traceXUI(__FUNCTION__, "on_commit", &value);
+
 						onCommit();
 					}
 				}
@@ -2402,6 +2431,9 @@ BOOL LLScrollListCtrl::handleUnicodeCharHere(llwchar uni_char)
 		if (mCommitOnKeyboardMovement
 			&& !mCommitOnSelectionChange) 
 		{
+			std::string value = getSelectedValue().asString();
+			traceXUI(__FUNCTION__, "on_commit", &value);
+
 			onCommit();
 		}
 	}
@@ -2448,6 +2480,9 @@ BOOL LLScrollListCtrl::handleUnicodeCharHere(llwchar uni_char)
 					if (mCommitOnKeyboardMovement
 						&& !mCommitOnSelectionChange) 
 					{
+						std::string value = getSelectedValue().asString();
+						traceXUI(__FUNCTION__, "on_commit", &value);
+
 						onCommit();
 					}
 
@@ -2541,6 +2576,9 @@ void LLScrollListCtrl::commitIfChanged()
 {
 	if (mSelectionChanged)
 	{
+		std::string value = getSelectedValue().asString();
+		traceXUI(__FUNCTION__, "on_commit", &value);
+
 		mDirty = TRUE;
 		mSelectionChanged = FALSE;
 		onCommit();

@@ -225,6 +225,9 @@ void LLLineEditor::onCommit()
 	// put current line into the line history
 	updateHistory();
 
+	std::string value = getText();
+	traceXUI(__FUNCTION__, "on_commit", &value);
+
 	LLUICtrl::onCommit();
 
 	// Selection on commit needs to be turned off when evaluating maths
@@ -1062,6 +1065,8 @@ void LLLineEditor::pasteHelper(bool is_primary)
 			else
 			if( mKeystrokeCallback )
 			{
+				LL_TRACE_XUI_DETAIL;
+
 				mKeystrokeCallback( this, mCallbackUserData );
 			}
 		}
@@ -1373,6 +1378,8 @@ BOOL LLLineEditor::handleKeyHere(KEY key, MASK mask )
 			// Notify owner if requested
 			if (!need_to_rollback && handled)
 			{
+				LL_TRACE_XUI_DETAIL;
+
 				if (mKeystrokeCallback)
 				{
 					mKeystrokeCallback(this, mCallbackUserData);
@@ -1421,6 +1428,8 @@ BOOL LLLineEditor::handleUnicodeCharHere(llwchar uni_char)
 		// Notify owner if requested
 		if( !need_to_rollback && handled )
 		{
+			LL_TRACE_XUI_DETAIL;
+
 			if( mKeystrokeCallback )
 			{
 				// HACK! The only usage of this callback doesn't do anything with the character.
@@ -1464,6 +1473,8 @@ void LLLineEditor::doDelete()
 		}
 		else
 		{
+			LL_TRACE_XUI_DETAIL;
+
 			if( mKeystrokeCallback )
 			{
 				mKeystrokeCallback( this, mCallbackUserData );
@@ -2544,6 +2555,9 @@ void LLLineEditor::updatePreedit(const LLWString &preedit_string,
 
 	// Update of the preedit should be caused by some key strokes.
 	mKeystrokeTimer.reset();
+
+	LL_TRACE_XUI_DETAIL;
+
 	if( mKeystrokeCallback )
 	{
 		mKeystrokeCallback( this, mCallbackUserData );
@@ -2783,6 +2797,10 @@ void LLSearchEditor::draw()
 void LLSearchEditor::onSearchEdit(LLLineEditor* caller, void* user_data )
 {
 	LLSearchEditor* search_editor = (LLSearchEditor*)user_data;
+
+	std::string value = caller->getText();
+	search_editor->traceXUI(__FUNCTION__, "on_edit", &value);
+
 	if (search_editor->mSearchCallback)
 	{
 		search_editor->mSearchCallback(caller->getText(), search_editor->mCallbackUserData);
@@ -2795,6 +2813,9 @@ void LLSearchEditor::onClearSearch(void* user_data)
 	LLSearchEditor* search_editor = (LLSearchEditor*)user_data;
 
 	search_editor->setText(LLStringUtil::null);
+
+	search_editor->traceXUI(__FUNCTION__, "on_edit", NULL);
+
 	if (search_editor->mSearchCallback)
 	{
 		search_editor->mSearchCallback(LLStringUtil::null, search_editor->mCallbackUserData);

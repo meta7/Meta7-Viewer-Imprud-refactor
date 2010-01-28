@@ -310,6 +310,9 @@ BOOL LLMultiSlider::handleHover(S32 x, S32 y, MASK mask)
 
 		F32 t = F32(x - left_edge) / (right_edge - left_edge);
 		setCurSliderValue(t * (mMaxValue - mMinValue) + mMinValue );
+
+		LL_TRACE_XUI_DETAIL;
+
 		onCommit();
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
@@ -330,6 +333,10 @@ BOOL LLMultiSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 	if( gFocusMgr.getMouseCapture() == this )
 	{
 		gFocusMgr.setMouseCapture( NULL );
+
+		LLSD string_value = getCurSliderValue();
+		std::string value = string_value.asString() + " " + mCurSlider;
+		traceXUI(__FUNCTION__, "on_release", &value);
 
 		if( mMouseUpCallback )
 		{
@@ -353,6 +360,7 @@ BOOL LLMultiSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	{
 		setFocus(TRUE);
 	}
+
 	if( mMouseDownCallback )
 	{
 		mMouseDownCallback( this, mCallbackUserData );
@@ -393,12 +401,18 @@ BOOL LLMultiSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	}
 	make_ui_sound("UISndClick");
 
+	LLSD string_value = getCurSliderValue();
+	std::string value = string_value.asString() + " " + mCurSlider;
+	traceXUI(__FUNCTION__, "on_click", &value);
+
 	return TRUE;
 }
 
 BOOL	LLMultiSlider::handleKeyHere(KEY key, MASK mask)
 {
 	BOOL handled = FALSE;
+	LLSD string_value;
+	std::string value;
 	switch(key)
 	{
 	case KEY_UP:
@@ -408,11 +422,21 @@ BOOL	LLMultiSlider::handleKeyHere(KEY key, MASK mask)
 		break;
 	case KEY_LEFT:
 		setCurSliderValue(getCurSliderValue() - getIncrement());
+
+		string_value = getCurSliderValue();
+		value = string_value.asString() + " " + mCurSlider;
+		traceXUI(__FUNCTION__, "on_commit", &value);
+
 		onCommit();
 		handled = TRUE;
 		break;
 	case KEY_RIGHT:
 		setCurSliderValue(getCurSliderValue() + getIncrement());
+
+		string_value = getCurSliderValue();
+		value = string_value.asString() + " " + mCurSlider;
+		traceXUI(__FUNCTION__, "on_commit", &value);
+
 		onCommit();
 		handled = TRUE;
 		break;

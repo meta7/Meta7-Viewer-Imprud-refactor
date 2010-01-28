@@ -53,6 +53,9 @@ public:
 
 	void buildFloater(LLFloater* floaterp, const std::string &filename, 
 					const LLCallbackMap::map_t* factory_map = NULL, BOOL open = TRUE);
+	void buildFloaterFromBuffer(LLFloater* floaterp, std::string& buffer, 
+					const LLCallbackMap::map_t* factory_map = NULL, BOOL open = TRUE);
+
 	BOOL buildPanel(LLPanel* panelp, const std::string &filename,
 					const LLCallbackMap::map_t* factory_map = NULL);
 
@@ -77,6 +80,8 @@ public:
 	virtual LLView* createWidget(LLPanel *parent, LLXMLNodePtr node);
 
 	static bool getLayeredXMLNode(const std::string &filename, LLXMLNodePtr& root);
+
+	static bool getLayeredXMLNodeFromBuffer(std::string &buffer, LLXMLNodePtr& root);
 
 	static const std::vector<std::string>& getXUIPaths();
 

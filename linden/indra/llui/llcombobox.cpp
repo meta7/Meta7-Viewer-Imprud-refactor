@@ -244,6 +244,9 @@ void LLComboBox::onCommit()
 		mTextEntry->setValue(getSimple());
 		mTextEntry->setTentative(FALSE);
 	}
+
+	LL_TRACE_XUI_DETAIL;
+
 	LLUICtrl::onCommit();
 }
 
@@ -706,6 +709,8 @@ void LLComboBox::onButtonDown(void *userdata)
 			self->mList->highlightNthItem(self->mList->getItemIndex(last_selected_item));
 		}
 
+		LL_TRACE_XUI_DETAIL_STATIC(self);
+
 		if( self->mPrearrangeCallback )
 		{
 			self->mPrearrangeCallback( self, self->mCallbackUserData );
@@ -753,6 +758,9 @@ void LLComboBox::onItemSelected(LLUICtrl* item, void *userdata)
 
 	// hiding the list reasserts the old value stored in the text editor/dropdown button
 	self->hideList();
+
+	std::string value = self->getValue().asString();
+	self->traceXUI(__FUNCTION__, "on_commit", &value);
 
 	// commit does the reverse, asserting the value in the list
 	self->onCommit();
@@ -880,6 +888,8 @@ void LLComboBox::onTextEntry(LLLineEditor* line_editor, void* user_data)
 {
 	LLComboBox* self = (LLComboBox*)user_data;
 
+	LL_TRACE_XUI_DETAIL_STATIC(self);
+
 	if (self->mTextEntryCallback)
 	{
 		(*self->mTextEntryCallback)(line_editor, self->mCallbackUserData);
@@ -912,6 +922,8 @@ void LLComboBox::onTextEntry(LLLineEditor* line_editor, void* user_data)
 		self->setCurrentByIndex(llmin(self->getItemCount() - 1, self->getCurrentIndex() + 1));
 		if (!self->mList->getVisible())
 		{
+			LL_TRACE_XUI_DETAIL_STATIC(self);
+
 			if( self->mPrearrangeCallback )
 			{
 				self->mPrearrangeCallback( self, self->mCallbackUserData );
@@ -930,6 +942,8 @@ void LLComboBox::onTextEntry(LLLineEditor* line_editor, void* user_data)
 		self->setCurrentByIndex(llmax(0, self->getCurrentIndex() - 1));
 		if (!self->mList->getVisible())
 		{
+			LL_TRACE_XUI_DETAIL_STATIC(self);
+
 			if( self->mPrearrangeCallback )
 			{
 				self->mPrearrangeCallback( self, self->mCallbackUserData );
@@ -963,6 +977,8 @@ void LLComboBox::updateSelection()
 	// callback to populate content
 	if( mTextEntry->getWText().size() == 1 )
 	{
+		LL_TRACE_XUI_DETAIL;
+
 		if (mPrearrangeCallback)
 		{
 			mPrearrangeCallback( this, mCallbackUserData );
@@ -1274,6 +1290,10 @@ void LLFlyoutButton::onActionButtonClick(void *user_data)
 	LLFlyoutButton* buttonp = (LLFlyoutButton*)user_data;
 	// remember last list selection?
 	buttonp->mList->deselect();
+
+	std::string value = buttonp->getValue().asString();
+	buttonp->traceXUI(__FUNCTION__, "on_commit", &value);
+
 	buttonp->onCommit();
 }
 

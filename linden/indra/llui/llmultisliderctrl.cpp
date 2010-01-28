@@ -328,6 +328,9 @@ void LLMultiSliderCtrl::onEditorCommit( LLUICtrl* caller, void *userdata )
 
 	if( success )
 	{
+		std::string value = text + " " + self->mMultiSlider->getCurSlider();
+		self->traceXUI(__FUNCTION__, "on_commit", &value);
+
 		self->onCommit();
 	}
 	else
@@ -422,6 +425,8 @@ void LLMultiSliderCtrl::onCommit()
 		mEditor->setTentative(FALSE);
 	}
 
+	LL_TRACE_XUI_DETAIL;
+
 	LLUICtrl::onCommit();
 }
 
@@ -448,6 +453,9 @@ void LLMultiSliderCtrl::setSliderMouseDownCallback( void (*slider_mousedown_call
 void LLMultiSliderCtrl::onSliderMouseDown(LLUICtrl* caller, void* userdata)
 {
 	LLMultiSliderCtrl* self = (LLMultiSliderCtrl*) userdata;
+
+	LL_TRACE_XUI_DETAIL_STATIC(self);
+
 	if( self->mSliderMouseDownCallback )
 	{
 		self->mSliderMouseDownCallback( self, self->mCallbackUserData );
@@ -465,6 +473,9 @@ void LLMultiSliderCtrl::setSliderMouseUpCallback( void (*slider_mouseup_callback
 void LLMultiSliderCtrl::onSliderMouseUp(LLUICtrl* caller, void* userdata)
 {
 	LLMultiSliderCtrl* self = (LLMultiSliderCtrl*) userdata;
+
+	LL_TRACE_XUI_DETAIL_STATIC(self);
+
 	if( self->mSliderMouseUpCallback )
 	{
 		self->mSliderMouseUpCallback( self, self->mCallbackUserData );

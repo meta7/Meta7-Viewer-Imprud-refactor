@@ -178,6 +178,9 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -189,6 +192,9 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -200,6 +206,9 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -211,6 +220,9 @@ BOOL LLRadioGroup::handleKeyHere(KEY key, MASK mask)
 			}
 			else
 			{
+				std::string value = getValue().asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
+
 				onCommit();
 			}
 			handled = TRUE;
@@ -339,6 +351,21 @@ LLSD LLRadioGroup::getValue() const
 	}
 	return LLSD();
 }
+
+// virtual
+void LLRadioGroup::setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata)
+{
+	LLUICtrl::setTrace(callback, userdata);
+
+	for (button_list_t::const_iterator iter = mRadioButtons.begin();
+		 iter != mRadioButtons.end(); ++iter)
+	{
+		LLRadioCtrl* radio = *iter;
+
+		radio->setTrace(callback, userdata);
+	}
+}
+
 
 // virtual
 LLXMLNodePtr LLRadioGroup::getXML(bool save_children) const

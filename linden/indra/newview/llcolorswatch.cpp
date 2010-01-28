@@ -290,7 +290,31 @@ void LLColorSwatchCtrl::onColorChanged ( void* data, EColorPickOp pick_op )
 									pickerp->getCurB (), 
 									subject->mColor.mV[VALPHA] ); // keep current alpha
 			subject->mColor = updatedColor;
-			subject->setControlValue(updatedColor.getValue());
+			LLSD color = updatedColor.getValue();
+			subject->setControlValue(color);
+
+			std::string value = "";
+			if (pick_op == COLOR_CANCEL)
+			{
+				value = "CANCEL";
+			}
+			else if (pick_op == COLOR_SELECT)
+			{
+				value = "SELECT";
+			}
+			else
+			{
+				value = "CHANGE";
+			}
+
+			LLSD::array_const_iterator i   = color.beginArray();
+			LLSD::array_const_iterator end = color.endArray();
+			for (; i != end; ++i)
+			{
+				value += " " + (*i).asString();
+			}
+
+			subject->traceXUI(__FUNCTION__, "on_commit", &value);
 
 			if (pick_op == COLOR_CANCEL && subject->mOnCancelCallback)
 			{

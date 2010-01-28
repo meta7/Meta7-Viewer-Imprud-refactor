@@ -89,6 +89,8 @@ protected:
 	virtual void loadAsset();
 	bool saveIfNeeded(LLInventoryItem* copyitem = NULL);
 
+	bool buildFloater();
+
 	static LLPreviewNotecard* getInstance(const LLUUID& uuid);
 
 	static void onLoadComplete(LLVFS *vfs,
@@ -97,6 +99,8 @@ protected:
 							   void* user_data, S32 status, LLExtStat ext_status);
 
 	static void onClickSave(void* data);
+
+	static void onBuildBtn(void* user_data);
 
 	static void onSaveComplete(const LLUUID& asset_uuid,
 							   void* user_data,

@@ -217,6 +217,9 @@
 #include "llwlparammanager.h"
 #include "llwaterparammanager.h"
 #include "llfloaternotificationsconsole.h"
+#include "llfloaterxuitrace.h"
+#include "llfloaterxuipreview.h"
+#include "llfloaterproxy.h"
 
 #include "lltexlayer.h"
 #include "primbackup.h"
@@ -371,6 +374,9 @@ void toggle_cull_small(void *);
 void toggle_show_xui_names(void *);
 BOOL check_show_xui_names(void *);
 
+void toggle_trace_xui(void *);
+BOOL check_trace_xui(void *);
+
 void run_vectorize_perf_test(void *)
 {
 	gSavedSettings.setBOOL("VectorizePerfTest", TRUE);
@@ -382,6 +388,8 @@ void handle_web_browser_test(void*);
 void handle_buy_currency_test(void*);
 void handle_save_to_xml(void*);
 void handle_load_from_xml(void*);
+void handle_trace_xui_to_console(void*);
+void handle_preview_xui(void*);
 
 void handle_god_mode(void*);
 
@@ -1096,6 +1104,9 @@ void init_debug_xui_menu(LLMenuGL* menu)
 	menu->append(new LLMenuItemCallGL("Load from XML...", handle_load_from_xml));
 	menu->append(new LLMenuItemCallGL("Save to XML...", handle_save_to_xml));
 	menu->append(new LLMenuItemCheckGL("Show XUI Names", toggle_show_xui_names, NULL, check_show_xui_names, NULL));
+	menu->append(new LLMenuItemCheckGL("Trace XUI to Log", toggle_trace_xui, NULL, check_trace_xui, NULL));
+	menu->append(new LLMenuItemCallGL("Trace XUI to Console", handle_trace_xui_to_console));
+	menu->append(new LLMenuItemCallGL("Preview XUI...", handle_preview_xui));
 
 	//menu->append(new LLMenuItemCallGL("Buy Currency...", handle_buy_currency));
 	menu->createJumpKeys();
@@ -7379,7 +7390,15 @@ BOOL check_show_xui_names(void *)
 	return gSavedSettings.getBOOL("ShowXUINames");
 }
 
+void toggle_trace_xui(void *)
+{
+	LLView::sTraceLog = !LLView::sTraceLog;
+}
 
+BOOL check_trace_xui(void *)
+{
+	return LLView::sTraceLog;
+}
 
 void toggle_cull_small(void *)
 {
@@ -7808,6 +7827,26 @@ void handle_load_from_xml(void*)
 		std::string filename = picker.getFirstFile();
 		LLFloater* floater = new LLFloater("sample_floater");
 		LLUICtrlFactory::getInstance()->buildFloater(floater, filename);
+	}
+}
+
+void handle_trace_xui_to_console(void*)
+{
+	new LLFloaterXUITrace ();
+}
+
+void handle_preview_xui(void*)
+{
+	LLFilePicker& picker = LLFilePicker::instance();
+	if (picker.getOpenFile(LLFilePicker::FFLOAD_XML))
+	{
+		std::string filename = picker.getFirstFile();
+		LLFloaterProxy* floater = new LLFloaterProxy("sample_floater");
+		LLUICtrlFactory::getInstance()->buildFloater(floater, filename);
+
+		LLFloaterXUIPreview* preview_floater = new LLFloaterXUIPreview ();
+
+		preview_floater->setTracedFloater(floater, filename);
 	}
 }
 
@@ -9586,6 +9625,65 @@ class LLAdvancedCheckXUINames : public view_listener_t
 
 
 
+//////////////////////
+// TRACE XUI TO LOG //
+//////////////////////
+
+
+class LLAdvancedToggleTraceXUIToLog : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		toggle_trace_xui(NULL);
+		return true;
+	}
+};
+
+class LLAdvancedCheckTraceXUIToLog : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		bool new_value = check_trace_xui(NULL);
+		std::string control_name = userdata["control"].asString();
+		gMenuHolder->findControl(control_name)->setValue(new_value);
+		return true;
+	}
+};
+
+
+
+//////////////////////////
+// TRACE XUI TO CONSOLE //
+//////////////////////////
+
+
+class LLAdvancedTraceXUIToConsole : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		handle_trace_xui_to_console(NULL);
+		return true;
+	}
+};
+
+
+
+/////////////////
+// PREVIEW XUI //
+/////////////////
+
+
+class LLAdvancedPreviewXUI : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		handle_preview_xui(NULL);
+		return true;
+	}
+};
+
+
+
 ////////////////////////
 // GRAB BAKED TEXTURE //
 ////////////////////////
@@ -10877,6 +10975,10 @@ void initialize_menus()
 	addMenu(new LLAdvancedSaveUIToXML(), "Advanced.SaveUIToXML");
 	addMenu(new LLAdvancedToggleXUINames(), "Advanced.ToggleXUINames");
 	addMenu(new LLAdvancedCheckXUINames(), "Advanced.CheckXUINames");
+	addMenu(new LLAdvancedToggleTraceXUIToLog(), "Advanced.ToggleTraceXUIToLog");
+	addMenu(new LLAdvancedCheckTraceXUIToLog(), "Advanced.CheckTraceXUIToLog");
+	addMenu(new LLAdvancedTraceXUIToConsole(), "Advanced.TraceXUIToConsole");
+	addMenu(new LLAdvancedPreviewXUI(), "Advanced.PreviewXUI");
 
 	// Advanced > Character > Grab Baked Texture
 	addMenu(new LLAdvancedGrabBakedTexture(), "Advanced.GrabBakedTexture");

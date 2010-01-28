@@ -231,6 +231,9 @@ void LLButton::onCommit()
 	// WARNING: Sometimes clicking a button destroys the floater or
 	// panel containing it.  Therefore we need to call mClickedCallback
 	// LAST, otherwise this becomes deleted memory.
+
+	traceXUI(__FUNCTION__, "on_commit", NULL);
+
 	LLUICtrl::onCommit();
 
 	if (mMouseDownCallback)
@@ -273,6 +276,8 @@ BOOL LLButton::handleUnicodeCharHere(llwchar uni_char)
 	if(' ' == uni_char 
 		&& !gKeyboard->getKeyRepeated(' '))
 	{
+		traceXUI(__FUNCTION__, "on_space", NULL);
+
 		if (mIsToggle)
 		{
 			toggleState();
@@ -292,6 +297,8 @@ BOOL LLButton::handleKeyHere(KEY key, MASK mask )
 	BOOL handled = FALSE;
 	if( mCommitOnReturn && KEY_RETURN == key && mask == MASK_NONE && !gKeyboard->getKeyRepeated(key))
 	{
+		traceXUI(__FUNCTION__, "on_return", NULL);
+
 		if (mIsToggle)
 		{
 			toggleState();
@@ -310,6 +317,8 @@ BOOL LLButton::handleKeyHere(KEY key, MASK mask )
 
 BOOL LLButton::handleMouseDown(S32 x, S32 y, MASK mask)
 {
+	traceXUI(__FUNCTION__, "on_click", NULL);
+
 	// Route future Mouse messages here preemptively.  (Release on mouse up.)
 	gFocusMgr.setMouseCapture( this );
 
@@ -340,6 +349,8 @@ BOOL LLButton::handleMouseUp(S32 x, S32 y, MASK mask)
 	// We only handle the click if the click both started and ended within us
 	if( hasMouseCapture() )
 	{
+		traceXUI(__FUNCTION__, "on_release", NULL);
+
 		// Always release the mouse
 		gFocusMgr.setMouseCapture( NULL );
 
@@ -387,6 +398,8 @@ BOOL LLButton::handleHover(S32 x, S32 y, MASK mask)
 
 	if (mMouseDownTimer.getStarted() && NULL != mHeldDownCallback)
 	{
+		LL_TRACE_XUI_DETAIL;
+
 		F32 elapsed = getHeldDownTime();
 		if( mHeldDownDelay <= elapsed && mHeldDownFrameDelay <= (S32)LLFrameTimer::getFrameCount() - mMouseDownFrame)
 		{

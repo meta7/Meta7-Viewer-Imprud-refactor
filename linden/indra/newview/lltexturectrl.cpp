@@ -1235,6 +1235,24 @@ void LLTextureCtrl::onFloaterCommit(ETexturePickOp op)
 			lldebugs << "mImageItemID: " << mImageItemID << llendl;
 			mImageAssetID = floaterp->getAssetID();
 			lldebugs << "mImageAssetID: " << mImageAssetID << llendl;
+
+			std::string value = mImageItemID.asString() + " " + mImageAssetID.asString();
+
+			if (op == TEXTURE_CANCEL)
+			{
+				value = "CANCEL " + value;
+			}
+			else if (op == TEXTURE_SELECT)
+			{
+				value = "SELECT " + value;
+			}
+			else
+			{
+				value = "CHANGE " + value;
+			}
+
+			traceXUI(__FUNCTION__, "on_commit", &value);
+
 			if (op == TEXTURE_SELECT && mOnSelectCallback)
 			{
 				mOnSelectCallback(this, mCallbackUserData);
@@ -1285,7 +1303,11 @@ BOOL LLTextureCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask,
 			{
 				// This removes the 'Multiple' overlay, since
 				// there is now only one texture selected.
-				setTentative( FALSE ); 
+				setTentative( FALSE );
+
+				std::string value = "SELECT " + mImageItemID.asString() + " " + mImageAssetID.asString();
+				traceXUI(__FUNCTION__, "on_commit", &value);
+
 				onCommit();
 			}
 		}
@@ -1391,6 +1413,8 @@ BOOL LLTextureCtrl::allowDrop(LLInventoryItem* item)
 	PermissionMask filter_perm_mask = mImmediateFilterPermMask;
 	if ( (item_perm_mask & filter_perm_mask) == filter_perm_mask )
 	{
+		LL_TRACE_XUI_DETAIL;
+
 		if(mDragCallback)
 		{
 			return mDragCallback(this, item, mCallbackUserData);
@@ -1409,6 +1433,9 @@ BOOL LLTextureCtrl::allowDrop(LLInventoryItem* item)
 BOOL LLTextureCtrl::doDrop(LLInventoryItem* item)
 {
 	// call the callback if it exists.
+
+	LL_TRACE_XUI_DETAIL;
+
 	if(mDropCallback)
 	{
 		// if it returns TRUE, we return TRUE, and therefore the

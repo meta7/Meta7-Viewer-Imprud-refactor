@@ -76,6 +76,9 @@ public:
 	/*virtual*/ BOOL 	isPanel() const;
 	/*virtual*/ void	draw();	
 	/*virtual*/ BOOL	handleKeyHere( KEY key, MASK mask );
+
+	virtual void setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata);
+
 	/*virtual*/ LLXMLNodePtr getXML(bool save_children = true) const;
 	// Override to set not found list:
 	virtual LLView* getChildView(const std::string& name, BOOL recurse = TRUE, BOOL create_if_missing = TRUE) const;
@@ -271,6 +274,9 @@ public:
 	virtual ~LLLayoutStack();
 
 	/*virtual*/ void draw();
+
+	virtual void setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata);
+
 	/*virtual*/ LLXMLNodePtr getXML(bool save_children = true) const;
 	/*virtual*/ void removeCtrl(LLUICtrl* ctrl);
 

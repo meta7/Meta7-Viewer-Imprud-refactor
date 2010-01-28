@@ -100,6 +100,8 @@ public:
 	virtual BOOL	handleToolTip(S32 x, S32 y, std::string& msg, LLRect* sticky_rect);
 	virtual void	draw();
 
+	virtual void setTrace(std::string (*callback)(LLView::trace_info&, void*), void* userdata);
+
 	virtual LLXMLNodePtr getXML(bool save_children = true) const;
 	static LLView* fromXML(LLXMLNodePtr node, LLView *parent, LLUICtrlFactory *factory);
 

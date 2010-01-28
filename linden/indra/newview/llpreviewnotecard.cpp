@@ -60,6 +60,8 @@
 #include "llappviewer.h"		// app_abort_quit()
 #include "lllineeditor.h"
 #include "lluictrlfactory.h"
+#include "llfloaterproxy.h"
+#include "llfloaterxuipreview.h"
 
 ///----------------------------------------------------------------------------
 /// Local function declarations, constants, enums, and typedefs
@@ -103,11 +105,13 @@ LLPreviewNotecard::LLPreviewNotecard(const std::string& name,
 		LLUICtrlFactory::getInstance()->buildFloater(this,"floater_preview_notecard_keep_discard.xml");
 		childSetAction("Keep",onKeepBtn,this);
 		childSetAction("Discard",onDiscardBtn,this);
+		childSetAction("Build Floater", onBuildBtn, this);
 	}
 	else
 	{
 		LLUICtrlFactory::getInstance()->buildFloater(this,"floater_preview_notecard.xml");
 		childSetAction("Save",onClickSave,this);
+		childSetAction("Build Floater", onBuildBtn, this);
 		
 		if( mAssetID.isNull() )
 		{
@@ -127,6 +131,7 @@ LLPreviewNotecard::LLPreviewNotecard(const std::string& name,
 	}
 			
 	childSetVisible("lock", FALSE);	
+	childSetVisible("Build Floater", FALSE);	
 	
 	const LLInventoryItem* item = getItem();
 	
@@ -201,6 +206,11 @@ void LLPreviewNotecard::draw()
 	LLViewerTextEditor* editor = getChild<LLViewerTextEditor>("Notecard Editor");
 	BOOL script_changed = !editor->isPristine();
 	
+	LLWString& prefix = editor->getWSubString(0,6);
+	LLWString xml (utf8str_to_wstring(std::string("<?xml ")));
+	BOOL is_xml = LLWStringUtil::compareStrings(prefix, xml) == 0;
+	childSetVisible ("Build Floater", is_xml);
+
 	childSetEnabled("Save", script_changed && getEnabled());
 	
 	LLPreview::draw();
@@ -443,6 +453,16 @@ void LLPreviewNotecard::onClickSave(void* user_data)
 	}
 }
 
+// static
+void LLPreviewNotecard::onBuildBtn(void* user_data)
+{
+	LLPreviewNotecard* preview = (LLPreviewNotecard*)user_data;
+	if(preview)
+	{
+		preview->buildFloater();
+	}
+}
+
 struct LLSaveNotecardInfo
 {
 	LLPreviewNotecard* mSelf;
@@ -532,6 +552,23 @@ bool LLPreviewNotecard::saveIfNeeded(LLInventoryItem* copyitem)
 			}
 		}
 	}
+	return true;
+}
+
+bool LLPreviewNotecard::buildFloater()
+{	
+	LLViewerTextEditor* editor = getChild<LLViewerTextEditor>("Notecard Editor");
+
+	std::string buffer = editor->getEmbeddedText();
+
+	LLFloaterProxy* floater = new LLFloaterProxy("sample_floater");
+	LLUICtrlFactory::getInstance()->buildFloaterFromBuffer(floater, buffer);
+
+	LLFloaterXUIPreview* preview_floater = new LLFloaterXUIPreview ();
+
+	preview_floater->setTracedFloater(floater);
+
+	
 	return true;
 }
 

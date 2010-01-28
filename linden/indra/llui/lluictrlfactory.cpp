@@ -224,6 +224,20 @@ bool LLUICtrlFactory::getLayeredXMLNode(const std::string &xui_filename, LLXMLNo
 	return true;
 }
 
+bool LLUICtrlFactory::getLayeredXMLNodeFromBuffer(std::string &buffer, LLXMLNodePtr& root)
+{
+	U32 nread = buffer.length();
+
+	U8* bufferp = (U8*)buffer.c_str();
+
+	if (!LLXMLNode::parseBuffer(bufferp, nread, root, NULL))
+	{
+		llwarns << "Problem reading UI description " << llendl;
+		return false;
+	}
+
+	return true;
+}
 
 //-----------------------------------------------------------------------------
 // buildFloater()
@@ -264,6 +278,39 @@ void LLUICtrlFactory::buildFloater(LLFloater* floaterp, const std::string& filen
 
 	LLHandle<LLFloater> handle = floaterp->getHandle();
 	mBuiltFloaters[handle] = filename;
+}
+
+void LLUICtrlFactory::buildFloaterFromBuffer(LLFloater* floaterp, std::string& buffer, 
+									const LLCallbackMap::map_t* factory_map, BOOL open) /* Flawfinder: ignore */
+{
+	LLXMLNodePtr root;
+
+	if (!LLUICtrlFactory::getLayeredXMLNodeFromBuffer(buffer, root))
+	{
+		return;
+	}
+	
+	// root must be called floater
+	if( !(root->hasName("floater") || root->hasName("multi_floater") ) )
+	{
+		llwarns << "Root node should be named floater " << llendl;
+		return;
+	}
+
+	if (factory_map)
+	{
+		mFactoryStack.push_front(factory_map);
+	}
+
+	floaterp->initFloaterXML(root, NULL, this, open);	/* Flawfinder: ignore */
+
+	if (factory_map)
+	{
+		mFactoryStack.pop_front();
+	}
+
+	LLHandle<LLFloater> handle = floaterp->getHandle();
+	mBuiltFloaters[handle] = "";
 }
 
 //-----------------------------------------------------------------------------

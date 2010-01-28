@@ -131,6 +131,9 @@ void LLSlider::setValueAndCommit(F32 value)
 
 	if (mValue != old_value)
 	{
+		std::string string_value = getValue().asString();
+		traceXUI(__FUNCTION__, "on_commit", &string_value);
+
 		onCommit();
 	}
 }
@@ -169,6 +172,8 @@ BOOL LLSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 	{
 		gFocusMgr.setMouseCapture( NULL );
 
+		LL_TRACE_XUI_DETAIL;
+
 		if( mMouseUpCallback )
 		{
 			mMouseUpCallback( this, mCallbackUserData );
@@ -191,6 +196,9 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	{
 		setFocus(TRUE);
 	}
+
+	LL_TRACE_XUI_DETAIL;
+
 	if( mMouseDownCallback )
 	{
 		mMouseDownCallback( this, mCallbackUserData );
