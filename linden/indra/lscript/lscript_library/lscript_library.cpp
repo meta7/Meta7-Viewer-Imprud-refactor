@@ -472,6 +472,12 @@ void LLScriptLibrary::init()
 	// IF YOU ADD NEW SCRIPT CALLS, YOU MUST PUT THEM AT THE END OF THIS LIST.
 	// Otherwise the bytecode numbers for each call will be wrong, and all
 	// existing scripts will crash.
+
+
+	addFunction(new LLScriptLibraryFunction(10.f, 0.f, dummy_func, "cmSetWindlightScene", "i", "l", "integer cmSetWindlightScene(list rules)\nSet the current WindLight scene. Restricted to estate managers and owners only."));
+	addFunction(new LLScriptLibraryFunction(10.f, 0.f, dummy_func, "cmSetWindlightSceneTargeted", "i", "lk", "integer cmSetWindlightSceneTargeted(list rules, key target)\nSet the current WindLight scene directed to a specific avatar. Restricted to estate managers and owners only."));
+	addFunction(new LLScriptLibraryFunction(10.f, 0.f, dummy_func, "cmGetWindlightScene", "l", "l", "list cmGetWindlightScene(list rules)\nGet the current WindLight settings."));
+
 }
 
 LLScriptLibraryFunction::LLScriptLibraryFunction(F32 eu, F32 st, void (*exec_func)(LLScriptLibData *, LLScriptLibData *, const LLUUID &), const char *name, const char *ret_type, const char *args, const char *desc, BOOL god_only)
