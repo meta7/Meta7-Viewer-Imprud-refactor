@@ -1,4 +1,4 @@
-
+﻿
 
                          HOW YOU CAN CONTRIBUTE
 
@@ -11,7 +11,7 @@
  EVERYBODY AND THEIR GRANDMAS
 
    Here are some good ways anybody can help out:
-
+ 
      * Let us know what you think needs to be improved about the SL
        Viewer.
 
