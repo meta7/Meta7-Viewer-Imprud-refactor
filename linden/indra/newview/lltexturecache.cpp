@@ -798,7 +798,10 @@ std::string LLTextureCache::getLocalFileName(const LLUUID& id)
 {
 	// Does not include extension
 	std::string idstr = id.asString();
-	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "default", "textures", idstr);
+
+	//We use LL_PATH_SKINS because the default textures (water normal map etc) are delivered in the SKINS path.
+	//Turns out we can't change this to LL_PATH_CACHE or these important textures will be removed when the user clears their cache.
+	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_SKINS, "default", "textures", idstr);
 	return filename;
 }
 

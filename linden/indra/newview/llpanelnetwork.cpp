@@ -127,7 +127,7 @@ void LLPanelNetwork::onClickResetCache(void* user_data)
  	LLPanelNetwork* self = (LLPanelNetwork*)user_data;
 	if (!gSavedSettings.getString("CacheLocation").empty())
 	{
-		gSavedSettings.setString("NewCacheLocation", "");
+		gSavedSettings.setString("NewCacheLocation", gDirUtilp->getCacheDir(true));
 		LLNotifications::instance().add("CacheWillBeMoved");
 	}
 	std::string cache_location = gDirUtilp->getCacheDir(true);
