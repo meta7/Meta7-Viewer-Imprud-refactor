@@ -101,7 +101,13 @@
              bottom_delta="-24" left_delta="0" height="16" width="140"
              follows="left|bottom" font="SansSerifSmall" control_name="RememberPassword" 
 	           initial_value="false" mouse_opaque="true"  />
+  
+  <!-- LOG IN -->
 
+  <button name="connect_btn" label="Log In"
+          bottom="34" left_delta="140" height="24" width="120"
+          follows="left|bottom" font="SansSerif" halign="center"
+	        mouse_opaque="true" scale_image="TRUE" />
 
   <!-- GRIDS -->
 
@@ -123,12 +129,7 @@
 		      mouse_opaque="true" scale_image="TRUE" />
 
 
-  <!-- LOG IN -->
 
-	<button name="connect_btn" label="Log In"
-          bottom="34" left_delta="140" height="24" width="120"
-          follows="left|bottom" font="SansSerif" halign="center"
-	        mouse_opaque="true" scale_image="TRUE" />
 
 
   <!-- ACCOUNT / FORGOT PASSWORD -->
