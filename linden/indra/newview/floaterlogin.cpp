@@ -558,13 +558,19 @@ void LoginFloater::refreshLocation( bool force_visible )
 	}
 	
 	BOOL show_start = TRUE;
+	BOOL show_grid_manager = TRUE;
 	
 	if ( ! force_visible )
+	{
 		show_start = gSavedSettings.getBOOL("ShowStartLocation");
+		show_grid_manager = gSavedSettings.getBOOL("ShowGridManager");
+	}
 	
 	sInstance->childSetVisible("start_location_combo", show_start);
 	sInstance->childSetVisible("start_location_text", show_start);
-	sInstance->childSetVisible("server_combo", TRUE);
+	sInstance->childSetVisible("server_combo", show_grid_manager);
+	sInstance->childSetVisible("grid_btn", show_grid_manager);
+	sInstance->childSetVisible("grid_text", show_grid_manager);
 }
 
 void LoginFloater::newShow(const std::string &grid, bool initialLogin)

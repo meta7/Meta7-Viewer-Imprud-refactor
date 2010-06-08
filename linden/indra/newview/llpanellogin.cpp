@@ -733,9 +733,21 @@ void LLPanelLogin::refreshLocation( bool force_visible )
 	}
 
 	BOOL show_start = TRUE;
+	BOOL show_grid_manager = TRUE;
 
+	
 	if ( ! force_visible )
+	{
 		show_start = gSavedSettings.getBOOL("ShowStartLocation");
+	}
+	if (gSavedSettings.getBOOL("ForceShowGrid"))
+	{
+		force_visible = true;
+	}
+	if ( force_visible )
+	{
+		show_grid_manager = gSavedSettings.getBOOL("ShowGridManager");
+	}
 
 
 // [RLVa:KB] - Checked: 2009-07-08 (RLVa-1.0.0e)
@@ -756,7 +768,9 @@ void LLPanelLogin::refreshLocation( bool force_visible )
 	BOOL show_server = gSavedSettings.getBOOL("ForceShowGrid");
 	sInstance->childSetVisible("server_combo", show_server);
 #else*/
-	sInstance->childSetVisible("server_combo", TRUE);
+	sInstance->childSetVisible("server_combo", show_grid_manager);
+	sInstance->childSetVisible("grid_btn", show_grid_manager);
+	sInstance->childSetVisible("grid_text", show_grid_manager);
 //#endif
 
 #endif
