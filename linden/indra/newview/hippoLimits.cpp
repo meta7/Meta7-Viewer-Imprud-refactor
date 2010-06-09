@@ -32,7 +32,7 @@ void HippoLimits::setOpenSimLimits()
 {
 	mMaxAgentGroups = 100;
 	mMaxPrimScale = 256.0f;
-	mMaxHeight = 10000.0f;
+	mMaxHeight = 16383.0f;
 	mMaxLinkedPrims = -1;
 
 	if (gHippoGridManager->getConnectedGrid()->isRenderCompat()) {
