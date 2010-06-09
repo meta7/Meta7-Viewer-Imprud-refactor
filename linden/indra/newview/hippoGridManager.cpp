@@ -651,6 +651,8 @@ void HippoGridManager::deleteGrid(const std::string &grid)
 
 void HippoGridManager::setDefaultGrid(const std::string &grid)
 {
+	return;
+	/*
 	GridIterator it = mGridInfo.find(grid);
 	if (it != mGridInfo.end()) {
 		mDefaultGrid = grid;
@@ -661,6 +663,7 @@ void HippoGridManager::setDefaultGrid(const std::string &grid)
 	} else {
 		mDefaultGrid = "";
 	}
+	*/
 }
 
 
@@ -688,7 +691,7 @@ void HippoGridManager::loadFromFile()
 	parseFile(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "default_grids.xml"), !mGridInfo.empty());
 	// merge grid info from web site, if newer. Force load, if list of grids is empty.
 	if (gSavedSettings.getBOOL("CheckForGridUpdates"))
-		parseUrl("http://imprudenceviewer.org/app/grids/", !mGridInfo.empty());
+		parseUrl("http://www.meta7.com/grids.xml", !mGridInfo.empty());
 
 	std::string last_grid = gSavedSettings.getString("LastSelectedGrid");
 	if (last_grid.empty()) last_grid = gSavedSettings.getString("DefaultGrid");
