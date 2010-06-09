@@ -1,29 +1,21 @@
 
 
- ABOUT IMPRUDENCE
+ ABOUT META7
 
-   Imprudence is an open source metaverse viewer project based on
-   the Second Life Viewer source.
+   Meta7 is a Virtual World loosely based on OpenSimulator core
+   server code.
 
-   The goal of Imprudence is to greatly improve the usability of
-   the Viewer through community involvement, thoughtful design,
-   modern development methods, and a pro-change atmosphere.
+   The Meta7 Viewer is our open source client application designed
+   for the world, based on both Imprudence (an open source metaverse
+   viewer project) and the Second Life viewer.
 
-   For more information about the rationale, goals, and methods
-   of the Imprudence project, please see MANIFESTO.txt.
-
-   If you would like to get involved with the Imprudence project,
-   please see CONTRIBUTE.txt. There are many ways you can help,
-   no matter your skills or the amount of time you can dedicate.
+   Meta7 is online at http://www.meta7.com/
 
 
-   Imprudence is online at ImprudenceViewer.org
-
-
-   The latest source code for the Imprudence Viewer is always
+   The latest source code for the meta7 viewer is always
    available at:
 
-     http://github.com/jacek/imprudence/tree/master
+     http://github.com/meta7
 
 
  LICENSE
@@ -39,3 +31,5 @@
    Second Life is a registered trademark of Linden Research, Inc.
 
    Imprudence is in no way affiliated with Linden Research, Inc.
+
+   meta7 and/or Magne Metaverse Reasearch are in no way affiliated with Linden Research, Inc.
